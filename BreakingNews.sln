@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakingNewsWeb", "BreakingNewsWeb\BreakingNewsWeb.csproj", "{9A9B24B0-E821-4F34-882B-72BFB4A8AF5F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{49C2B056-79A7-4F6D-8CE7-046192F77A05} = {49C2B056-79A7-4F6D-8CE7-046192F77A05}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAPIParser", "NewsAPIParser\NewsAPIParser.csproj", "{49C2B056-79A7-4F6D-8CE7-046192F77A05}"
 EndProject

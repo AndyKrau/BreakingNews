@@ -1,2 +1,23 @@
-﻿@{
-}
+﻿@using BreakingNewsWeb.Controllers;
+@using BreakingNewsWeb.Models;
+@using BreakingNewsWeb.Services;
+
+@model IEnumerable<Article>;
+<style>
+    img
+    {
+        max-height: 50px;
+    }
+</style>
+
+<h2>Breaking News</h2>
+<section>
+    <ul>
+        @foreach (var article in Model)
+        {
+            <li>
+                @article.Title
+            </li>
+        }
+    </ul>
+</section>
