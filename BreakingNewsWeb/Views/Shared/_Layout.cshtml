@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Breaking News | @ViewBag.Title</title>
+    </head>
+    <header>
+        <div><a href="/Home/Index">Новости</a> | <a href="/Home/About">Статьи</a> | <a href="/Home/About">О нас</a></div>
+    </header>
+    <body>
+        <div>
+            @RenderBody()
+        </div>
+    <footer>
+        Copyright© AndyKrause, @(DateTime.Now.Year). All rights reserved
+    </footer>
+    </body>
+</html>

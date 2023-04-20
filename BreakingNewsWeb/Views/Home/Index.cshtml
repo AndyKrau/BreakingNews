@@ -3,20 +3,25 @@
 @using BreakingNewsWeb.Services;
 
 @model IEnumerable<Article>;
+
+@{
+}
+
 <style>
     img
     {
-        max-height: 50px;
+        max-height: 100px;
     }
 </style>
 
-<h2>Breaking News</h2>
 <section>
     <ul>
         @foreach (var article in Model)
         {
             <li>
+                <img src="@article.UrlToImage"/>
                 @article.Title
+                
             </li>
         }
     </ul>
