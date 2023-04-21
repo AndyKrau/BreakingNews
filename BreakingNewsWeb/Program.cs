@@ -7,5 +7,6 @@ builder.Services.AddTransient<ITakeArticles, TakeArticles>();
 
 var app = builder.Build();
 app.MapDefaultControllerRoute();
+app.UseStaticFiles();
 
 app.Run();

@@ -5,10 +5,10 @@ namespace NewsAPIParser
 {
     internal class ApplicationContext : DbContext
     {
-        public DbSet<Article> Articles { get; set; } = null!;
+        public DbSet<Article> Articles { get; set; }
         public ApplicationContext()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

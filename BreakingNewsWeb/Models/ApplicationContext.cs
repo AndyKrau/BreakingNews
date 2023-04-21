@@ -4,7 +4,7 @@ namespace BreakingNewsWeb.Models;
 
 public class ApplicationContext : DbContext
 {
-    public DbSet<Article> Articles { get; set; } = null!;
+    public DbSet<Article> Articles { get; set; }
     public ApplicationContext()
     {
     }
