@@ -8,7 +8,6 @@ namespace NewsAPIParser
         public DbSet<Article> Articles { get; set; }
         public ApplicationContext()
         {
-            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

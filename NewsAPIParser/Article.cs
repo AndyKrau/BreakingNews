@@ -4,6 +4,7 @@ namespace NewsAPIParser
 {
     public class Article
     {
+        // делаем поле id автоинкрементным
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? Source { get; set; }

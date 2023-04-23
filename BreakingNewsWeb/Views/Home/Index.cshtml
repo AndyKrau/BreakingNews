@@ -7,21 +7,15 @@
 @{
 }
 
-<style>
-    img
-    {
-        max-height: 100px;
-    }
-</style>
 
-<section>
-    <ul>
-        @foreach (var article in Model)
-        {
-            <li>
-                <img src="@article.UrlToImage"/>
-                @article.Title
-            </li>
-        }
-    </ul>
-</section>
+@foreach (var article in Model)
+{
+    <div class="article @article.Id">
+        <img class="img" src="@article.UrlToImage"/>
+        <div class="title">@article.Title</div>
+        <div class="content">@article.Content</div>
+        <a class="more" href="@article.Url">More</a>
+        
+    </div>
+}
+

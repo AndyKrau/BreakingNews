@@ -2,7 +2,7 @@
 
 public partial class Article
 {
-    public string ArticleId { get; set; } = null!;
+    public int Id { get; set; }
 
     public string? Source { get; set; }
 
