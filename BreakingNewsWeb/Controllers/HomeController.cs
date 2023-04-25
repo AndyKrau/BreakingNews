@@ -7,15 +7,20 @@ namespace BreakingNewsWeb.Controllers
     public class HomeController : Controller
     {
         public DbSet<Article> _articles;
+
         public HomeController(ITakeArticles articles) 
         {
-            //получаем список статей при обращении к контроллеру
+            // получаем список статей при обращении к контроллеру
             _articles = articles.MakeListArticles();
         }
 
         public IActionResult Index()
         {
-            return View(_articles); //передаём список статей в предствление
+            // Переворачиваем список статей из БД, я вывода последних добавленных
+            List<Article> reverseArticles = Enumerable.Reverse(_articles).ToList();
+
+            // передаём список статей в предствление
+            return View(reverseArticles);
         }
     }
 }

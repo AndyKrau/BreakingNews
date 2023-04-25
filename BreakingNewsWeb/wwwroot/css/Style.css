@@ -19,7 +19,12 @@ container {
     align-items: center;
     box-sizing: border-box;
     padding-left: 35px;
-    padding-right:35px;
+    padding-right: 35px;
+}
+
+.header__icons {
+    display: flex;
+    height: 50px;
 }
 
 .main {
@@ -49,17 +54,24 @@ container {
     width: 360px;
     height: 225px;
 }
-.img__header{
-    height:50px;
+
+.img__header {
+    height: 50px;
 }
 
 .title {
     padding-top: 10px;
     font-size: 1.5rem;
 }
-.content{
+
+.content {
     padding-top: 10px;
 }
-.more{
+
+.more {
     padding-top: 10px;
+}
+
+.published {
+    padding-top: 20px;
 }
