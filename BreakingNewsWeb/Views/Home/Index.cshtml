@@ -5,18 +5,36 @@
 @model IEnumerable<Article>;
 
 @{
+    int count = 0;
+    // quantityArticlesOnPage задаёт количество выводимых статей на страницу
+    int quantityArticlesOnPage = 20;
+    var mainArticle = Model.First();
+    ViewBag.PageInfo = $"Последние новости на {DateTime.Now.ToShortDateString()}";
 }
 
 
+
+<div class="mainArticle">
+    <img class="main-img" src="@mainArticle.UrlToImage"/>
+    <div class="title">@mainArticle.Title</div>
+    <div class="content">@mainArticle.Content</div>
+    <div class="published">@mainArticle.PublishedAt</div>
+    <a class="more" href="@mainArticle.Url">More</a>
+</div>
+
 @foreach (var article in Model)
 {
-    <div class="article @article.Id">
-        <img class="img" src="@article.UrlToImage"/>
-        <div class="title">@article.Title</div>
-        <div class="content">@article.Content</div>
-        <div class="published">@article.PublishedAt</div>
-        <a class="more" href="@article.Url">More</a>
-        
-    </div>
+    if (count < quantityArticlesOnPage)
+    {
+        <div class="article class-@count">
+            <img class="img" src="@article.UrlToImage"/>
+            <div class="title">@article.Title</div>
+            <div class="content">@article.Content</div>
+            <div class="published">@article.PublishedAt</div>
+            <a class="more" href="@article.Url">More</a>
+        </div>
+        count++;
+    }
+    else break;
 }
 

@@ -22,5 +22,11 @@ namespace BreakingNewsWeb.Controllers
             // передаём список статей в предствление
             return View(reverseArticles);
         }
+
+        public IActionResult Articles()
+        {
+            List<Article> reverseArticles = Enumerable.Reverse(_articles).ToList();
+            return View(reverseArticles);
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace NewsAPIParser
         
         public string? Responce { get; set; }
 
-        //конструктор получает адрес
+        // конструктор получает адрес
         public GetRequest(string? address)
         {
             _address = address;
