@@ -32,6 +32,7 @@ container {
 
 }
 
+
 .header__today-text {
     font-size: 1.5rem;
     margin:10px;
@@ -71,6 +72,15 @@ header__list-source {
     margin-bottom: 20px;
 }
 
+.class-0{
+    display:none;
+}
+
+.pagination{
+    display:flex;
+    justify-content:center;
+}
+
 
 .mainArticle {
     display: flex;
@@ -85,6 +95,30 @@ header__list-source {
     max-width: 360px;
     max-height: 225px;
 }
+
+.pagination__btn {
+    border: solid 1px #cdcaca;
+    margin: 10px 5px 10px 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background: whitesmoke;
+    text-decoration: none;
+}
+
+
+.pagination__btn:active{
+    background:gray;
+}
+
+.pagination__btn:is(:hover){
+    background:gray;
+}
+
+pagination__btn-active{
+    background:gray;
+
+}
+
 
 .main-img {
     object-fit: cover;

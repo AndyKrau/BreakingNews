@@ -1,6 +1,7 @@
 ﻿using BreakingNewsWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PagedList.Core;
 
 namespace BreakingNewsWeb.Controllers
 {
@@ -8,7 +9,7 @@ namespace BreakingNewsWeb.Controllers
     {
         public DbSet<Article> _articles;
 
-        public HomeController(ITakeArticles articles) 
+        public HomeController(ITakeArticles articles)
         {
             // получаем список статей при обращении к контроллеру
             _articles = articles.MakeListArticles();
@@ -23,10 +24,23 @@ namespace BreakingNewsWeb.Controllers
             return View(reverseArticles);
         }
 
-        public IActionResult Articles()
+        public IActionResult Articles(int page = 0)
         {
             List<Article> reverseArticles = Enumerable.Reverse(_articles).ToList();
-            return View(reverseArticles);
+            int pageSize = 5;
+            int count = reverseArticles.Count();
+
+            var data = reverseArticles.Skip(page * pageSize).Take(pageSize).ToList();
+            ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
+            ViewBag.Page = page;
+
+            return View(data);
+
+
+
+            // List<Article> reverseArticles = Enumerable.Reverse(_articles).ToList();
+            //return View(reverseArticles);
+
         }
     }
 }
