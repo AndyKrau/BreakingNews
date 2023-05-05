@@ -80,7 +80,7 @@ internal class Program
             }
 
 
-            // запись полученных статей в БД с 
+            // проверка и запись полученных статей в БД 
             foreach (var article in articleListFromAPI)
             {
                 // получаем обрезанную версию заголовка полученной статьи из API 

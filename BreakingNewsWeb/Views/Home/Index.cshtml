@@ -9,10 +9,8 @@
     // quantityArticlesOnPage задаёт количество выводимых статей на страницу
     int quantityArticlesOnPage = 20;
     var mainArticle = Model.First();
-    ViewBag.PageInfo = $"Последние новости на {DateTime.Now.ToShortDateString()}";
+    ViewBag.PageInfo = $"Last news on {DateTime.Now.ToShortDateString()}";
 }
-
-
 
 <div class="mainArticle">
     <img class="main-img" src="@mainArticle.UrlToImage"/>

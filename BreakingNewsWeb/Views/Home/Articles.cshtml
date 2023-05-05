@@ -8,7 +8,6 @@
     ViewBag.PageInfo = "Articles collection:";
 }
 
-
 @foreach (var article in Model)
 {
     <div class="articles">
@@ -22,28 +21,34 @@
     </div>
 }
 
-<div class="pagination">
-@if (ViewBag.Page > 0)
-{
-    <a href="@Url.Action("Articles", new { page = ViewBag.Page - 1 })" 
-       class="pagination__btn">
-       &laquo;
-    </a>
-}
+<div class="pagination" >
+    <ul class="pagination__ul" >
+        @if (ViewBag.Page > 0)
+        {
+            <li class="pagination__btn-arrow" >
+                <a class="pagination__a" href="@Url.Action("Articles", new { page = ViewBag.Page - 1 })">
+                    &laquo;
+                </a>
+            </li>
+        }
 
-@for (int i = 0; i < ViewBag.MaxPage +1; i++)
-{
-    <a href="@Url.Action("Articles", new { page = i  })" 
-       class="pagination__btn pagination__btn-active ">
-        @i
-    </a>
-}
+        @for (int i = 0; i < ViewBag.MaxPage +1; i++)
+        {
+            <li class="pagination__btn page-@i" >
+                <a class="pagination__a" href="@Url.Action("Articles", new { page = i })" >
+                    @i
+                </a> 
+            </li>
+        }
 
-@if (ViewBag.Page < ViewBag.MaxPage)
-{
-    <a href="@Url.Action("Articles", new { page = ViewBag.Page + 1 })" 
-       class="pagination__btn">
-       &raquo;
-    </a>
-}
+        @if (ViewBag.Page < ViewBag.MaxPage)
+        {
+            <li class="pagination__btn-arrow">
+                <a class="pagination__a" href="@Url.Action("Articles", new { page = ViewBag.Page + 1 })" 
+                    >
+                    &raquo;
+                </a>
+            </li>
+        }
+    </ul>
 </div>

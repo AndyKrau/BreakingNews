@@ -1,0 +1,25 @@
+﻿@using BreakingNewsWeb.Models;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model IEnumerable<User>;
+
+@{
+    ViewBag.PageInfo = "Users";
+}
+
+<div class="">
+    <form asp-controller="Home" asp-action="Logout" method="post">
+        <button class="btn btn-primary btn-lg">Logout</button>
+    </form>
+</div>
+<div>
+    <table>
+        <tr><td>UserId</td><td>Name</td><td>Password</td><td>Email</td><td>Role</td></tr>
+        @foreach (var user in Model)
+        {
+            <tr><td>@user.UserId</td><td>@user.Name</td><td>@user.Password</td><td>@user.Email</td><td>@user.Role</td></tr>
+        }
+    </table>
+</div>
+

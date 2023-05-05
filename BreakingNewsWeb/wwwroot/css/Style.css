@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: 'Oswald', sans-serif;
+    /*font-family: 'Oswald', sans-serif;*/
 }
 
 container {
@@ -13,6 +13,8 @@ container {
     display: flex;
 }
 
+/*-----HEADER-----*/
+
 .header {
     height: 75px;
     justify-content: space-between;
@@ -20,22 +22,23 @@ container {
     box-sizing: border-box;
     padding-left: 35px;
     padding-right: 35px;
+    margin-bottom: 16px;
     /*background-color: lightgray;*/
+    border-bottom: 1px solid #dee2e6;
+    /*box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, .05);*/
 }
 
 .header__today {
     height: 50px;
-    border-top: solid 1px lightgray;
+    /*border-top: solid 1px lightgray;*/
     /*border-bottom: solid 1px lightgray;*/
     text-align: center;
-    margin-bottom: 10px;
-
+    margin-bottom: 16px;
 }
-
 
 .header__today-text {
     font-size: 1.5rem;
-    margin:10px;
+    margin: 10px;
 }
 
 header__list-source {
@@ -44,6 +47,66 @@ header__list-source {
     justify-content: center;
 }
 
+.header__img {
+    /*  width: 250px;
+    height: 50px;*/
+}
+
+.header__img-logo {
+    height: 50px;
+}
+
+.header__icons {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: 250px;
+}
+
+.header__icons-user {
+
+}
+
+.header__nav {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    margin-bottom: 0;
+    width: 250px;
+}
+
+.header__nav-links {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: black;
+    text-decoration: none;
+}
+
+    .header__nav-links:hover {
+        color: darkgrey;
+    }
+
+.header__nav-ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.header__nav-li {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.header__current-user a {
+    text-decoration: none;
+    color: gray;
+}
+
+
+
+/*-----MAIN-----*/
 .main {
     display: flex;
     flex-direction: row;
@@ -52,10 +115,17 @@ header__list-source {
     box-sizing: border-box;
 }
 
-.footer {
-    height: 75px;
-    justify-content: center;
-    align-items: center;
+.mainArticle {
+    display: flex;
+    flex-direction: column;
+    width: 63%;
+    height: contain;
+    margin-bottom: 20px;
+}
+
+.main-img {
+    object-fit: cover;
+    max-width: 100%;
 }
 
 .article {
@@ -72,22 +142,9 @@ header__list-source {
     margin-bottom: 20px;
 }
 
-.class-0{
-    display:none;
-}
-
-.pagination{
-    display:flex;
-    justify-content:center;
-}
-
-
-.mainArticle {
-    display: flex;
-    flex-direction: column;
-    width: 63%;
-    height: contain;
-    margin-bottom: 20px;
+/*используется для скрытия первой статьи из базы*/
+.class-0 {
+    display: none;
 }
 
 .img {
@@ -96,55 +153,51 @@ header__list-source {
     max-height: 225px;
 }
 
-.pagination__btn {
-    border: solid 1px #cdcaca;
-    margin: 10px 5px 10px 5px;
-    padding: 5px 10px;
-    border-radius: 3px;
-    background: whitesmoke;
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination__ul {
+    display: flex;
     text-decoration: none;
+    list-style-type: none;
 }
 
-
-.pagination__btn:active{
-    background:gray;
+.pagination__a {
+    text-decoration: none;
+    color: gray;
 }
 
-.pagination__btn:is(:hover){
-    background:gray;
-}
+    .pagination__btn, .pagination__btn-arrow {
+        border: solid 1px #cdcaca;
+        margin: 10px 5px 10px 5px;
+        padding: 5px 10px;
+        border-radius: 3px;
+        background: whitesmoke;
+        text-decoration: none;
+ 
+    }
 
-pagination__btn-active{
-    background:gray;
+    .pagination__btn:active {
+        background: lightgray;
+        color: white;
+    }
 
-}
+    .pagination__btn:is(:hover) {
+        background: lightgray;
+        color: white;
+    }
+
+   /* .pagination__btn:visited {
+        background: darkgray;
+        color: white;
+    }*/
 
 
-.main-img {
-    object-fit: cover;
-    max-width: 100%;
-}
 
-.header__img {
-    width: 250px;
-    height: 50px;
-}
-
-.header__img-logo {
-    width: 250px;
-    height: 40px;
-}
-
-.header__icons {
-    display: flex;
-    justify-content: right;
-    width: 250px;
-}
-
-.header__nav {
-    display: flex;
-    justify-content: space-between;
-    width: 150px;
+pagination__btn-active {
+    background: gray;
 }
 
 .articles__img {
@@ -180,6 +233,11 @@ pagination__btn-active{
     padding-top: 20px;
 }
 
-.header__icons-user {
-    margin-right: 10px;
+
+
+
+.footer {
+    height: 75px;
+    justify-content: center;
+    align-items: center;
 }

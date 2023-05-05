@@ -1,0 +1,32 @@
+﻿@using System.Net;
+@using BreakingNewsWeb.Models;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers;
+
+@{
+    ViewBag.PageInfo = $"Personal Area";
+}
+
+<h3>You login as @ViewData["currentUserName"].</h3>
+
+@*<div>
+    <form asp-controller="Home" asp-action="Logout" method="post">
+        <button class="btn btn-primary btn-lg">Logout</button>
+    </form>
+</div>*@
+
+<div>
+    @try
+    {
+        if ((string)@ViewData["currentUserRole"] == Role.admin.ToString())
+        {
+            <a class="header__current-user" asp-controller="Users" asp-action="Users" >USERS!</a>
+        }
+    }
+    catch (Exception)
+    {
+        
+        throw;
+    }
+</div>
+

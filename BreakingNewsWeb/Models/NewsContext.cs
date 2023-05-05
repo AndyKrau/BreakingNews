@@ -2,11 +2,12 @@
 
 namespace BreakingNewsWeb.Models;
 
-public class ApplicationContext : DbContext
+public class NewsContext : DbContext
 {
     public DbSet<Article> Articles { get; set; }
-    public ApplicationContext()
+    public NewsContext()
     {
+        Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
