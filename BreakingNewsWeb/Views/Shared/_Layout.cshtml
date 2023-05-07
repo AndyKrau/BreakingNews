@@ -13,7 +13,7 @@
        
     </head>
     <body>
-        <container>
+        <container class="d-flex flex-column min-vh-100">
             <header class="header">
                 <div class="header__img">
                    <img class="header__img-logo" src="/img/breakingnews.png" />
@@ -48,24 +48,19 @@
                             <button class="btn"><img class="header__icons-user" src="/img/user_login.svg" width="30" height="30" alt="User-icon"></button>
                         </form>
                     }
-
-
-
-
-
-                    @*<img class="header__icons-user" src="/img/user_login.svg" width="30px" height="30px" alt="User-icon"></img>*@
-                    @*<a href="*"><img class="header__icons-find" src="/img/search1.svg" width="33px" height="33px" alt="User-icon"></img></a>*@
-                    @*<a asp-controller="Home" asp-action="Login"> LogIn </a>*@
                 </div>
             </header>
             <div class="header__today">
                 <h2>@ViewBag.PageInfo </h2>
             </div>
-            <div class="main">
+            <div class="container">
                 @RenderBody()
             </div>
-            <footer class="footer">
-                Copyright© AndyKrause, @(DateTime.Now.Year). All rights reserved
+
+            <footer class="navbar mt-auto">
+               <div class="container-fluid justify-content-center">
+                   Copyright© AndyKrause, @(DateTime.Now.Year). All rights reserved
+               </div>
             </footer>
         </container>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>

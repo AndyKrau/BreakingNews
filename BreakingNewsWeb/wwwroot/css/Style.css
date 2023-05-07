@@ -149,8 +149,8 @@ header__list-source {
 
 .img {
     object-fit: cover;
-    max-width: 360px;
-    max-height: 225px;
+    width: 360px;
+    height: 225px;
 }
 
 .pagination {
@@ -212,21 +212,22 @@ pagination__btn-active {
     flex-direction: column;
 }
 
+.articles__title {
+    font-size: 1.5rem;
+}
+
 .title {
     padding-top: 10px;
     font-size: 1.5rem;
 }
 
-.articles__title {
-    font-size: 1.5rem;
-}
+
 
 .content, .articles__content {
     padding-top: 10px;
 }
 
 .more, articles__more {
-    padding-top: 10px;
 }
 
 .published, .articles__published {

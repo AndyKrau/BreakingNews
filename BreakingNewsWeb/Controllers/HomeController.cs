@@ -1,4 +1,5 @@
 ﻿using BreakingNewsWeb.Models;
+using BreakingNewsWeb.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -24,22 +25,16 @@ namespace BreakingNewsWeb.Controllers
 
             // получаем список пользователей из БД usersDB
             _users = users.MakeListUsers();
-        }
+           }
 
         public IActionResult Index()
         {
             // Переворачиваем список статей из БД, я вывода последних добавленных
             List<Article> reverseArticles = Enumerable.Reverse(_articles).ToList();
 
-            // пробую получать имя на всех старницах 
-
-            var context = HttpContext;
-
-            var _user = context.User.Identity;
-
+            // получаем имя пользователя из куки
+            var _user = HttpContext.User.Identity;
             ViewData["currentUserName"] = _user?.Name;
-
-            // пробую получать имя на всех старницах 
 
             // передаём список статей в предствление
             return View(reverseArticles);
@@ -56,25 +51,18 @@ namespace BreakingNewsWeb.Controllers
             ViewBag.Page = page;
 
 
-            // пробую получать имя на всех старницах 
-
+            // получаем имя пользователя из куки
             var currentUser = HttpContext.User.Identity;
             ViewData["currentUserName"] = currentUser?.Name;
-
-            // пробую получать имя на всех старницах 
-
 
             return View(data);
         }
 
         public IActionResult About()
         {
-            // пробую получать имя на всех старницах 
-
+            // получаем имя пользователя из куки
             var currentUser = HttpContext.User.Identity;
             ViewData["currentUserName"] = currentUser?.Name;
-
-            // пробую получать имя на всех старницах 
 
             return View();
         }
@@ -87,7 +75,7 @@ namespace BreakingNewsWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
         {
-            List<User> usersFromDb = _users.ToList();
+            List<User> usersFromDb = _users!.ToList();
 
             foreach (User user in usersFromDb)
             {
@@ -97,6 +85,10 @@ namespace BreakingNewsWeb.Controllers
                     {
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, user.Role.ToString()),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                        new Claim(ClaimTypes.PostalCode, user.PostalCode),
+                        new Claim(ClaimTypes.Country, user.Country),
                     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, "Login");
@@ -105,7 +97,6 @@ namespace BreakingNewsWeb.Controllers
 
                     return Redirect(ReturnUrl == null ? "/Users/PersonalArea" : ReturnUrl);
                 }
-
             }
             return View();
         }
@@ -117,6 +108,36 @@ namespace BreakingNewsWeb.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(User user, CreateUser creater)
+        {
+            // создаём пользователя и помещаем в базу
+            var _newUser = creater.CreateNewUser(user);
+
+            // помещаем данные о пользователе в cookie и редиректив в ЛК
+            var claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.Name, _newUser.Name),
+                        new Claim(ClaimTypes.Role, _newUser.Role.ToString()),
+                        new Claim(ClaimTypes.Email, _newUser.Email),
+                        new Claim(ClaimTypes.MobilePhone, _newUser.PhoneNumber),
+                        new Claim(ClaimTypes.PostalCode, _newUser.PostalCode),
+                        new Claim(ClaimTypes.Country, _newUser.Country),
+                    };
+
+            var claimsIdentity = new ClaimsIdentity(claims, "CreateUser");
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            return Redirect("/Users/PersonalArea");
+
+           
+        }
 
     }
 }

@@ -7,26 +7,56 @@
     ViewBag.PageInfo = $"Personal Area";
 }
 
-<h3>You login as @ViewData["currentUserName"].</h3>
-
-@*<div>
-    <form asp-controller="Home" asp-action="Logout" method="post">
-        <button class="btn btn-primary btn-lg">Logout</button>
-    </form>
-</div>*@
-
-<div>
-    @try
-    {
-        if ((string)@ViewData["currentUserRole"] == Role.admin.ToString())
-        {
-            <a class="header__current-user" asp-controller="Users" asp-action="Users" >USERS!</a>
-        }
-    }
-    catch (Exception)
-    {
+<div class="row">
+    <div class="col-md-2">
+        <form class="d-grid gap-2 col-12 mx-right">
+            @try
+            {
+                if ((string)@ViewData["currentUserRole"] == Role.admin.ToString())
+                {
+                    <button class="btn btn-light" asp-controller="Users" asp-action="Users">Users</button>
+                    <button class="btn btn-light" asp-controller="Users" asp-action="Users">Administration</button>
+                }
+            }
+            catch (Exception)
+            {
         
-        throw;
-    }
+                throw;
+            }
+            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Account settings</button>
+            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Update information</button>
+            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Statictic</button>
+        </form>
+    </div>
+
+    <div class="col-md-9 offset-md-1">
+        <div class="row"> 
+             <div class="col-md-3">
+                <img src="~/img/unknown-user.jpg" class="img-thumbnail" alt="img-thumbnail">
+                <label for="formFile" class="form-label mt-3">Download photo</label>
+                <input class="form-control" type="file" id="formFile">
+             </div>
+             <div class="col-md-9 ml-4">
+                 <h4>User information:</h4>
+                 <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Name: </span><span>@ViewData["currentUserName"]</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">E-mail: </span><span>@ViewData["currentUserEmail"]</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Country: </span><span>@ViewData["currentUserCountry"]</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Postal code: </span><span>@ViewData["currentUserPostalCode"]</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Phone number: </span><span>@ViewData["currentUserMobilePhone"]</span>
+                 </div>
+             </div>
+        </div>
+    </div>
 </div>
+
+
 

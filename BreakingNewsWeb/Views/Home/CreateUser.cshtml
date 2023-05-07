@@ -1,2 +1,78 @@
-﻿@{
+﻿@using BreakingNewsWeb.Models;
+
+@*@model IEnumerable<User>;*@
+@{
+    ViewBag.PageInfo = $"Login:";
 }
+
+
+<div class="row">
+   <div class="col-md-4 offset-md-4">
+       <form method="post">
+            <label for="Name" class="form-label mt-2">Name:</label>
+            <input type="text" name="Name" class="form-control" id="Name" placeholder="Enter your Name">
+
+            <label for="password" class="form-label mt-2">Password:</label>
+            <input type="password" name="password" class="form-control" id="password"  placeholder="Enter your password">
+
+            <label for="Email" class="form-label mt-2">Email:</label>
+            <input type="text" name="email" class="form-control" id="Email"  placeholder="Enter your E-mail">
+
+            <label for="PhoneNumber" class="form-label mt-2">Phone number:</label>
+            <input type="text" name="PhoneNumber" class="form-control" id="PhoneNumber"  placeholder="Enter your Phone number">
+
+            <label for="PostalCode" class="form-label mt-2">Postal code:</label>
+            <input type="text" name="PostalCode" class="form-control" id="PostalCode"  placeholder="Enter your Postal code">
+
+            <label for="Country" class="form-label mt-2">Country:</label>
+            <input type="text" name="Country" class="form-control" id="Country"  placeholder="Enter your Country">
+
+            <button class="btn btn-primary mt-3" asp-controller="Home" asp-action="CreateUser">Create</button>
+        </form>
+   </div>
+</div>
+
+
+
+
+  @*  <p>
+        <label>Name</label><br />
+        <input type="text" name="Name" />
+    </p>*@
+    @*<p>
+        <label>Password</label><br />
+        <input type="number" name="Password" />
+    </p>*@
+    @*<p>
+        <label>Email</label><br />
+        <input type="text" name="email" />
+    </p>*@
+    @* <p>
+        <label>Phone number</label><br />
+        <input type="text" name="PhoneNumber" />
+    </p>
+     <p>
+        <label>Postal code</label><br />
+        <input type="text" name="PostalCode" />
+    </p>
+     <p>
+        <label>Country</label><br />
+        <input type="text" name="Country" />
+    </p>
+    <p>
+        <input type="submit" value="Отправить" asp-controller="Home" asp-action="CreateUser"/>
+    </p>*@
+
+
+@*<div> 
+    <ul>
+         @foreach (var item in Model)
+            {
+                <li>@item.Name</li>
+                <li>@item.Email</li>
+                <li>@item.Country</li>
+                <li>@item.PhoneNumber</li>
+                <li>@item.PostalCode</li>
+            }
+    </ul>
+</div>*@

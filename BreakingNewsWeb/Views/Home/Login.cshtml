@@ -1,13 +1,21 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<h1>Login.cshtml</h1>
-<div>
-    <form method="post">
-        <input type="text" name="username" placeholder="Type Username" />
-        <input type="password" name="password" placeholder="Type Password" />
-        <button class="btn btn-primary">Login</button>
-    </form>
-</div>
+@{
+    ViewBag.PageInfo = $"Login:";
+}
 
+<div class="row">
+   <div class="col-md-4 offset-md-4">
+       <form method="post">
+            <label for="username" class="form-label mt-2">Username:</label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
+            <label for="username" class="form-label mt-2">Password:</label>
+                <input type="password" name="password" class="form-control" id="password"  placeholder="Enter your password">
+            <button class="btn btn-primary mt-3">Login</button>
+            
+        </form>
+        <a class="btn btn-primary mt-3" asp-controller="Home" asp-action="CreateUser">Create user</a>
+   </div>
+</div>
 
 

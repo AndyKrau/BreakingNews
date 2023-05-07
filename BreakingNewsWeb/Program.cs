@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
 builder.Services.AddTransient<ITakeArticles, TakeArticles>();
 builder.Services.AddTransient<ITakeUsers, TakeUsers>();
+builder.Services.AddTransient<ICreateUser, CreateUser>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(o =>
                 {

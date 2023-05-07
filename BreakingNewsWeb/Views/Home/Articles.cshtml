@@ -15,8 +15,8 @@
         <div class="articles__text">
             <div class="articles__title">@article.Title</div>
             <div class="articles__content">@article.Content</div>
-            <div class="articles__published">@article.PublishedAt</div>
-            <a class="articles__more" href="@article.Url">More</a>
+            <div class="text-muted mt-2">@article.Source - @article.PublishedAt</div>
+            <a class="articles__more btn btn-light mt-2 col-1 btn-sm" href="@article.Url">More</a>
         </div>
     </div>
 }

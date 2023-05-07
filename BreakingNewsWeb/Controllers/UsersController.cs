@@ -22,11 +22,16 @@ namespace BreakingNewsWeb.Controllers
         }
         public IActionResult PersonalArea()
         {
+            // получаем имя пользователя и роль из куки
             var context = HttpContext;
             var user = HttpContext.User.Identity;
 
             ViewData["currentUserName"] = user?.Name;
             ViewData["currentUserRole"] = context.User.FindFirst(ClaimTypes.Role)?.Value;
+            ViewData["currentUserEmail"] = context.User.FindFirst(ClaimTypes.Email)?.Value;
+            ViewData["currentUserPostalCode"] = context.User.FindFirst(ClaimTypes.PostalCode)?.Value;
+            ViewData["currentUserCountry"] = context.User.FindFirst(ClaimTypes.Country)?.Value;
+            ViewData["currentUserMobilePhone"] = context.User.FindFirst(ClaimTypes.MobilePhone)?.Value;
 
             return View();
         }

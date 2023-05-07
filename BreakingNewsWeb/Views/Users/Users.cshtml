@@ -13,13 +13,21 @@
         <button class="btn btn-primary btn-lg">Logout</button>
     </form>
 </div>
-<div>
-    <table>
-        <tr><td>UserId</td><td>Name</td><td>Password</td><td>Email</td><td>Role</td></tr>
-        @foreach (var user in Model)
-        {
-            <tr><td>@user.UserId</td><td>@user.Name</td><td>@user.Password</td><td>@user.Email</td><td>@user.Role</td></tr>
-        }
-    </table>
+
+<div class="row">
+<div class="col-md-6">
+
+    <div class="table table-striped">
+        <table>
+            <tr><td>UserId</td><td>Name</td><td>Password</td><td>Email</td><td>Role</td></tr>
+            @foreach (var user in Model)
+            {
+                <tr><td>@user.UserId</td><td>@user.Name</td><td>@user.Password</td><td>@user.Email</td><td>@user.Role</td></tr>
+            }
+        </table>
+    </div>
+    </div>
+
 </div>
+
 
