@@ -11,18 +11,25 @@ namespace BreakingNewsWeb.Controllers
     public class UsersController : Controller
     {
         public DbSet<User>? _users;
-        public UsersController(ITakeUsers users)
+        public UsersController(UsersContext usersContext)
         {
             // получаем список пользователей 
-            _users = users.MakeListUsers();
+            //_users = users.MakeListUsers();
+            _users = usersContext.Users;
         }
+
+        // Users/Users
+
+        [Authorize(Policy = "OnlyForAdmin")]
         public IActionResult Users()
         {
             return View(_users);
         }
+
+        // Users/PersonalArea
         public IActionResult PersonalArea()
         {
-            // получаем имя пользователя и роль из куки
+            // получаем данные пользователя из куки для карточки пользователя
             var context = HttpContext;
             var user = HttpContext.User.Identity;
 

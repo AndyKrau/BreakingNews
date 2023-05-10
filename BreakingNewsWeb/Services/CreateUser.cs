@@ -5,10 +5,13 @@ namespace BreakingNewsWeb.Services
 {
     public class CreateUser : ICreateUser
     {
+        UsersContext db;
+        public CreateUser(UsersContext usersContext)
+        {
+            db = usersContext;
+        }
         public User CreateNewUser(User user)
         {
-            UsersContext db = new UsersContext();
-
             var newUser = new User
             {
                 Name = user.Name,

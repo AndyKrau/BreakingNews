@@ -38,15 +38,13 @@
                         <div class="header__current-user">
                             <a asp-controller="Users" asp-action="PersonalArea" >Hello, @ViewData["currentUserName"]</a>
                         </div>
-                        <form asp-controller="Home" asp-action="Logout" method="post">
-                            <button class="btn"><img class="header__icons-find" src="/img/logout.svg" width="40" height="40" alt="Logout"></button>
+                        <form method="post">
+                            <button class="btn" asp-controller="Home" asp-action="Logout"><img class="header__icons-find" src="/img/logout.svg" width="40" height="40" alt="Logout"></button>
                         </form>
                     }
                     else
                     {
-                        <form asp-controller="Home" asp-action="Login" method="post">
-                            <button class="btn"><img class="header__icons-user" src="/img/user_login.svg" width="30" height="30" alt="User-icon"></button>
-                        </form>
+                        <a class="btn" asp-controller="Home" asp-action="Login"><img class="header__icons-user" src="/img/user_login.svg" width="30" height="30" alt="User-icon"></a>
                     }
                 </div>
             </header>

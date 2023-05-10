@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using NewsAPIParser;
 using Newtonsoft.Json.Linq;
+using System;
 
 internal class Program
 {
@@ -32,10 +31,9 @@ internal class Program
         // По каждой статье создаём экземпляр класса Article и помещаем его в список статей articleListFromAPI
         foreach (var item in articles!)
         {
-            // создание экз класса и наполение его данными статьи, добавление ArticleId
+            // создание экз класса и наполение его данными статьи
             Article article = new Article()
             {
-                // ArticleId = null,
                 Source = (string?)item["source"]?["name"],
                 Author = (string?)item["author"] ?? "Unknown",
                 Title = (string?)item["title"] ?? "Unknown",
@@ -62,52 +60,27 @@ internal class Program
         // в дальнейшем будем сравнивать по этим заголовками заголовки полученных статей, для избежания дублирования статей в базе
         using (ApplicationContext db = new ApplicationContext())
         {
-            // получаем текущий список статей из базы данных
-            DbSet<Article>? listArticlesInDb = db.Articles;
-            // создаём список всех заголовков статей из базы данных
-            List<string> titlesArticlesFromDb = new List<string>();
+            int addedArticles = 0;
+            int matchesFound = 0;
 
-            // проверяем лист на наличие содержимого
-            // если спикок не пуст
-            if (listArticlesInDb != null)
+            foreach (var item in articleListFromAPI)
             {
-                // начинаем просматривать все статьи в базе
-                foreach (var article in listArticlesInDb)
+                // проверяем заголовок каждой статьи из списка на наличие такой же в базе по index полю
+                var existArticle = db.Articles.FirstOrDefault(a => a.Title == item.Title);
+                if (existArticle == null)
                 {
-                    // добавляем title в список для дальнейшего стравнения при добавлении статьи
-                    titlesArticlesFromDb.Add(article.Title!);
+                    db.Articles.Add(item);
+                    addedArticles++;
                 }
-            }
-
-
-            // проверка и запись полученных статей в БД 
-            foreach (var article in articleListFromAPI)
-            {
-                // получаем обрезанную версию заголовка полученной статьи из API 
-                string shortTitle = article.Title!.Substring(0, 10);
-
-                // вводим переменную для определения совпадений при поиске, если count>0 записывать статью в базу не нужно
-                int count = 0;
-
-                // пробегаемся по списку заголовков из БД и ищем совпадения, не начинается ли заголовок из базы
-                // на нашу обрезанную версию заголовка полученной статьи
-                for (int i = 0; i < titlesArticlesFromDb.Count; i++)
-                {
-                    // если короткий заголовок находится в базе, плюсуем счетчик
-                    if (titlesArticlesFromDb[i].StartsWith($"{shortTitle}"))
-                        count++;
-                }
-
-                // в случае если совпадений нет помещаем статью в базу
-                if (count == 0)
-                    db.Articles.Add(article);
+                else matchesFound++;
             }
 
             // сохраняем внесейнные данные в самой базе
             db.SaveChanges();
 
-            Console.WriteLine("Данные успешно добавлены в базу!");
-            Console.WriteLine($"Текущее количество статей в базе данных: {listArticlesInDb!.Count()}");
+            Console.WriteLine($"Added to DB {addedArticles} articles.");
+            Console.WriteLine($"Had find matches in DB for {matchesFound} articles.");
+            Console.WriteLine($"Current quantity of articles in DB: {db.Articles!.Count()}");
         }
     }
 }
