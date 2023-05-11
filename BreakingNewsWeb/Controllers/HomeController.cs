@@ -119,6 +119,27 @@ namespace BreakingNewsWeb.Controllers
             return Redirect("/Users/PersonalArea");
         }
 
+        public IActionResult DeleteUser(int id)
+        {
+            return View(id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int? id)
+        {
+            if (id != null)
+            {
+                var existUser = usersDb.Users.FirstOrDefault(a => a.UserId == id);
+
+                if (existUser != null)
+                {
+                    usersDb.Users.Entry(existUser).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                    await usersDb.SaveChangesAsync();
+                    return Redirect("/Users/Users");
+                }
+            }
+            return Redirect("/Users/Users");
+        }
 
         public IActionResult AccessDenied()
         {
