@@ -56,20 +56,18 @@ namespace BreakingNewsWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
         {
-            List<User> usersFromDb = usersDb.Users!.ToList();
+            var existUser = usersDb.Users.FirstOrDefault(x => x.Name == username && x.Password == password);
 
-            foreach (User user in usersFromDb)
-            {
-                if (username == user.Name && password == user.Password)
+                if (existUser != null)
                 {
                     var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.Name, username),
-                        new Claim(ClaimTypes.Role, user.Role.ToString()),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber??""),
-                        new Claim(ClaimTypes.PostalCode, user.PostalCode??""),
-                        new Claim(ClaimTypes.Country, user.Country??""),
+                        new Claim(ClaimTypes.Role, existUser.Role.ToString()),
+                        new Claim(ClaimTypes.Email, existUser.Email),
+                        new Claim(ClaimTypes.MobilePhone, existUser.PhoneNumber??""),
+                        new Claim(ClaimTypes.PostalCode, existUser.PostalCode??""),
+                        new Claim(ClaimTypes.Country, existUser.Country??""),
                     };
 
                     var claimsIdentity = new ClaimsIdentity(claims, "Login");
@@ -78,7 +76,7 @@ namespace BreakingNewsWeb.Controllers
 
                     return Redirect(ReturnUrl == null ? "/Users/PersonalArea" : ReturnUrl);
                 }
-            }
+
             return View();
         }
 

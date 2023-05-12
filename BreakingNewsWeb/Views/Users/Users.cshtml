@@ -14,14 +14,14 @@
             <button class="btn btn-light" asp-controller="Users" asp-action="PersonalArea">Back</button>
         </form>
     </div>
-    <div class="col-md-9 offset-md-1">
+    <div class="col-md-7 offset-md-1">
         <table class="table table-striped table-hover">
             <tr>
                 <td>UserId</td>
                 <td>Name</td>
-                <td>Password</td>
                 <td>Email</td>
                 <td>Role</td>
+                <td></td>
                 <td></td>
             </tr>
             @foreach (var user in Model)
@@ -33,23 +33,29 @@
                     <td>@user.Role</td>
                     <td>
                         <button type="button" 
-                                class="btn btn-light btn-sm" 
-                                id="btnOpenModal" 
-                                onclick="myFunction()"
+                                class="btn btn-light btn-sm btn-open-modal" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#exampleModal" 
                                 data-id="@user.UserId" 
                                 data-name="@user.Name" 
-                                data-password="@user.Password"
                                 data-email="@user.Email"
                                 data-phone="@user.PhoneNumber"
                                 data-role="@user.Role"
                                 data-country="@user.Country"
-                                data-postalCode="@user.PostalCode">More info
+                                data-postalcode="@user.PostalCode">More info
                         </button>
+                    </td>
+                    <td> 
                         <form method="post">
-                            <button class="btn btn-light btn-sm" asp-controller="Home" asp-action="DeleteUser" asp-route-id="@user.UserId">Delete</button>
-                        </form>
+                            @if(user.Name == (string?)ViewData["currentUserName"])
+                            {
+                                <button class="btn btn-light btn-sm disabled" asp-controller="Home" asp-action="DeleteUser" asp-route-id="@user.UserId">Delete</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-light btn-sm " asp-controller="Home" asp-action="DeleteUser" asp-route-id="@user.UserId">Delete</button>
+                            }
+                        </form>                        
                     </td>
                 </tr>
             }
@@ -76,9 +82,6 @@
                 <div class="mt-2 mb-2">
                     <span class="fw-bolder">Name: </span><span id="name"></span>
                 </div>
-                 <div class="mt-2 mb-2">
-                    <span class="fw-bolder">Password: </span><span id="password"></span>
-                </div>
                 <div class="mt-2 mb-2">
                     <span class="fw-bolder">Role: </span><span id="role"></span>
                 </div>
@@ -92,9 +95,8 @@
                     <span class="fw-bolder">Country: </span><span id="country"></span>
                 </div>
                 <div class="mt-2 mb-2">
-                    <span class="fw-bolder">Postal code: </span><span id="postalCode"></span>
+                    <span class="fw-bolder">Postal code: </span><span id="postalcode"></span>
                 </div>
-                
             </div>
         </div>
       <div class="modal-footer">
