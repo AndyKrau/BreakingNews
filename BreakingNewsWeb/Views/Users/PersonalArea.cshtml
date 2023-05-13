@@ -16,26 +16,23 @@
                 if ((string)@ViewData["currentUserRole"] == Role.admin.ToString())
                 {
                     <button class="btn btn-light" asp-controller="Users" asp-action="Users">Users</button>
-                    <button class="btn btn-light" asp-controller="Users" asp-action="Users">Administration</button>
                 }
             }
             catch (Exception)
             {
                 throw;
             }
-            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Account settings</button>
-            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Statictic</button>
             <button type="button" 
-                                class="btn btn-light btn-sm btn-open-modal" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#exampleModal" 
-                                data-name="@ViewData["currentUserName"]" 
-                                data-email="@ViewData["currentUserEmail"]"
-                                data-phone="@ViewData["currentUserMobilePhone"]"
-                                data-role="@ViewData["currentUserRole"]"
-                                data-country="@ViewData["currentUserCountry"]"
-                                data-postalcode="@ViewData["currentUserPostalCode"]">Edit
-                        </button>
+                    class="btn btn-light btn-sm btn-open-modal" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#exampleModal" 
+                    data-name="@ViewData["currentUserName"]" 
+                    data-email="@ViewData["currentUserEmail"]"
+                    data-phone="@ViewData["currentUserMobilePhone"]"
+                    data-role="@ViewData["currentUserRole"]"
+                    data-country="@ViewData["currentUserCountry"]"
+                    data-postalcode="@ViewData["currentUserPostalCode"]">Edit
+            </button>
         </form>
     </div>
 

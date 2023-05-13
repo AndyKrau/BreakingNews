@@ -15,7 +15,7 @@ namespace BreakingNewsWeb.Services
             var newUser = new User
             {
                 Name = user.Name,
-                Password = user.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
                 Email = user.Email,
                 Country = user.Country,
                 PhoneNumber = user.PhoneNumber,

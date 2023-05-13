@@ -6,7 +6,7 @@
 }
 
 
-< class="row">
+<div class="row">
    <div class="col-md-4 offset-md-4">
        <form id="createUser" asp-controller="Home" asp-action="CreateUser" method="post">
             <p>
@@ -39,7 +39,7 @@
                 <input type="text" asp-for="Country" class="form-control" placeholder="Enter your Country">
                 <span form="createUser" asp-validation-for="Country"></span>
             </p>
-            <button class="btn btn-primary mt-3" >Create</button>
+            <button class="btn btn-primary mt-3">Create</button>
         </form>
    </div>
 </div>

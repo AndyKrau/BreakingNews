@@ -1,4 +1,5 @@
-﻿using BreakingNewsWeb.Models;
+﻿using BreakingNewsWeb.Migrations.UsersData;
+using BreakingNewsWeb.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,20 @@ namespace BreakingNewsWeb.Controllers
             // получаем контекст usersDB
             usersDb = usersContext;
 
+            //var newUser = new User
+            //{
+            //    Name = "admin",
+            //    Password = BCrypt.Net.BCrypt.HashPassword("1234"),
+            //    Email = "admin@admin.com",
+            //    Country = "Russia",
+            //    PhoneNumber = "+7890123123",
+            //    PostalCode = "99999999",
+            //    Role = Role.admin
+            //};
+
+            //usersDb.Add(newUser);
+            //usersDb.SaveChanges();
+
         }
 
         public IActionResult Index()
@@ -33,7 +48,7 @@ namespace BreakingNewsWeb.Controllers
         public IActionResult Articles(int page = 0)
         {
             List<Article> reverseArticles = Enumerable.Reverse(newsDb.Articles).ToList();
-            int pageSize = 5;
+            int pageSize = 10;
             int count = reverseArticles.Count();
 
             var data = reverseArticles.Skip(page * pageSize).Take(pageSize).ToList();
@@ -56,9 +71,11 @@ namespace BreakingNewsWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
         {
-            var existUser = usersDb.Users.FirstOrDefault(x => x.Name == username && x.Password == password);
+            var existUser = usersDb.Users.FirstOrDefault(x => x.Name == username);
 
-                if (existUser != null)
+            bool isValidPass = BCrypt.Net.BCrypt.Verify(password, existUser?.Password);
+
+                if (isValidPass)
                 {
                     var claims = new List<Claim>()
                     { 
@@ -103,6 +120,7 @@ namespace BreakingNewsWeb.Controllers
             // помещаем данные о пользователе в cookie и редиректим в ЛК
             var claims = new List<Claim>()
                     {
+                        new Claim(ClaimTypes.NameIdentifier, _newUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, _newUser.Name),
                         new Claim(ClaimTypes.Role, _newUser.Role.ToString()),
                         new Claim(ClaimTypes.Email, _newUser.Email),

@@ -35,9 +35,9 @@ namespace BreakingNewsWeb.Controllers
         {
             // получаем данные пользователя из куки для карточки пользователя
             var context = HttpContext;
-            var user = HttpContext.User.Identity;
 
-            ViewData["currentUserName"] = user?.Name;
+            // определяем переменные для модального окна
+            ViewData["currentUserName"] = context.User.FindFirst(ClaimTypes.Name)?.Value;
             ViewData["currentUserRole"] = context.User.FindFirst(ClaimTypes.Role)?.Value;
             ViewData["currentUserEmail"] = context.User.FindFirst(ClaimTypes.Email)?.Value;
             ViewData["currentUserPostalCode"] = context.User.FindFirst(ClaimTypes.PostalCode)?.Value;
@@ -47,29 +47,34 @@ namespace BreakingNewsWeb.Controllers
             return View();
         }
 
+        // Users/PersonalArea
+        // Modal window Edit. Safe changes of users data
         [HttpPost]
         public async Task<IActionResult> SaveChange(User user)
         {
-            var context = HttpContext;
+            // находим userId
+            var currentUserNameIdentifier = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUserId = Int32.Parse(currentUserNameIdentifier!);
 
-            var currentUserId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            var x = Int32.Parse(currentUserId!);
-
-            var existUser = usersDb.Users.FirstOrDefault(u => u.UserId == x);
+            // находим пользователя в базе по userId
+            var existUser = usersDb.Users.FirstOrDefault(u => u.UserId == currentUserId);
 
             if (existUser != null)
             {
+                // обновляем данные
                 existUser.Name = user.Name;
                 existUser.Email = user.Email;
                 existUser.Country = user.Country;
                 existUser.PhoneNumber = user.PhoneNumber;
                 existUser.PostalCode = user.PostalCode;
 
+                // сохраняем изменения
                 usersDb.SaveChanges();
 
+                // обновляем куки для карточки
                 var claims = new List<Claim>()
                     {
+                        new Claim(ClaimTypes.NameIdentifier, existUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, existUser.Name),
                         new Claim(ClaimTypes.Role, existUser.Role.ToString()),
                         new Claim(ClaimTypes.Email, existUser.Email),
