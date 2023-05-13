@@ -61,7 +61,8 @@ namespace BreakingNewsWeb.Controllers
                 if (existUser != null)
                 {
                     var claims = new List<Claim>()
-                    {
+                    { 
+                        new Claim(ClaimTypes.NameIdentifier, existUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, existUser.Role.ToString()),
                         new Claim(ClaimTypes.Email, existUser.Email),

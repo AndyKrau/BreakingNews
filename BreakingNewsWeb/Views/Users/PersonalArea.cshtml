@@ -1,5 +1,6 @@
 ﻿@using System.Net;
 @using BreakingNewsWeb.Models;
+@model User;
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers;
 
@@ -20,12 +21,21 @@
             }
             catch (Exception)
             {
-        
                 throw;
             }
             <button class="btn btn-light" asp-controller="Users" asp-action="Users">Account settings</button>
-            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Update information</button>
             <button class="btn btn-light" asp-controller="Users" asp-action="Users">Statictic</button>
+            <button type="button" 
+                                class="btn btn-light btn-sm btn-open-modal" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#exampleModal" 
+                                data-name="@ViewData["currentUserName"]" 
+                                data-email="@ViewData["currentUserEmail"]"
+                                data-phone="@ViewData["currentUserMobilePhone"]"
+                                data-role="@ViewData["currentUserRole"]"
+                                data-country="@ViewData["currentUserCountry"]"
+                                data-postalcode="@ViewData["currentUserPostalCode"]">Edit
+                        </button>
         </form>
     </div>
 
@@ -33,8 +43,7 @@
         <div class="row"> 
              <div class="col-md-3">
                 <img src="~/img/unknown-user.jpg" class="img-thumbnail" alt="img-thumbnail">
-                <label for="formFile" class="form-label mt-3">Download photo</label>
-                <input class="form-control" type="file" id="formFile">
+                
              </div>
              <div class="col-md-9 ml-4">
                  <h4>User information:</h4>
@@ -56,6 +65,64 @@
              </div>
         </div>
     </div>
+</div>
+
+
+<!-- Модальное окно Edit -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">User information:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body" id="modal-body" >
+            <div class="col-md-6 offset-md-3 mb-3">
+                <img src="~/img/unknown-user.jpg" class="img-thumbnail" alt="img-thumbnail">
+                <label for="formFile" class="form-label mt-3">Download photo</label>
+                <input class="form-control" type="file" id="formFile">
+            </div>
+            <div class="col-md-10 offset-md-1 ml-4">
+                <form method="post" id="form-edit">
+                    <div class="row mb-3">
+                       <label asp-for="Name" class="col-sm-4 col-form-label col-form-label-sm">Name: </label>
+                       <div class="col-sm-8">
+                          <input type="text" class="form-control" asp-for="Name" value="@ViewData["currentUserName"]">
+                       </div>
+                    </div>
+                    <div class="row mb-3">
+                       <label asp-for="Email" class="col-sm-4 col-form-label col-form-label-sm">E-mail: </label>
+                       <div class="col-sm-8">
+                          <input type="email" class="form-control" asp-for="Email" value="@ViewData["currentUserEmail"]">
+                       </div>
+                    </div>
+                    <div class="row mb-3">
+                       <label asp-for="PhoneNumber" class="col-sm-4 col-form-label col-form-label-sm">Phone number: </label>
+                       <div class="col-sm-8">
+                          <input type="text" class="form-control" asp-for="PhoneNumber" value="@ViewData["currentUserMobilePhone"]">
+                       </div>
+                    </div>
+                    <div class="row mb-3">
+                       <label asp-for="Country" class="col-sm-4 col-form-label col-form-label-sm">Country: </label>
+                       <div class="col-sm-8">
+                          <input type="text" class="form-control" asp-for="Country" value="@ViewData["currentUserCountry"]">
+                       </div>
+                    </div>
+                    <div class="row mb-3">
+                       <label asp-for="PostalCode" class="col-sm-4 col-form-label col-form-label-sm">Postal code: </label>
+                       <div class="col-sm-8">
+                          <input type="text" class="form-control" asp-for="PostalCode" value="@ViewData["currentUserPostalCode"]">
+                       </div>
+                    </div>
+                </form>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button form="form-edit" class="btn btn-secondary" asp-controller="Users" asp-action="SaveChange">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
