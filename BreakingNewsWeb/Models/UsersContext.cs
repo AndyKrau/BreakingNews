@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BreakingNewsWeb.Migrations.UsersData;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace BreakingNewsWeb.Models;
 
@@ -10,4 +12,9 @@ public class UsersContext : DbContext
         Database.EnsureCreated();
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .HasIndex(user => new { user.Name}).IsUnique(true);
+    }
 }

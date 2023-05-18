@@ -1,5 +1,6 @@
 ﻿using BreakingNewsWeb.Migrations.UsersData;
 using BreakingNewsWeb.Models;
+using BreakingNewsWeb.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,8 @@ namespace BreakingNewsWeb.Controllers
 {
     public class HomeController : Controller
     {
-        public NewsContext newsDb;
-        public UsersContext usersDb;
+        private readonly NewsContext newsDb;
+        private readonly UsersContext usersDb;
 
         public HomeController(NewsContext newsContext, UsersContext usersContext)
         {
@@ -20,8 +21,9 @@ namespace BreakingNewsWeb.Controllers
             // получаем контекст usersDB
             usersDb = usersContext;
 
-            //var newUser = new User
-            //{
+            #region Adding default admin
+            // var newUser = new User
+            // {
             //    Name = "admin",
             //    Password = BCrypt.Net.BCrypt.HashPassword("1234"),
             //    Email = "admin@admin.com",
@@ -29,32 +31,45 @@ namespace BreakingNewsWeb.Controllers
             //    PhoneNumber = "+7890123123",
             //    PostalCode = "99999999",
             //    Role = Role.admin
-            //};
-
-            //usersDb.Add(newUser);
-            //usersDb.SaveChanges();
+            // };
+            // usersDb.Add(newUser);
+            // usersDb.SaveChanges();
+            #endregion
 
         }
 
         public IActionResult Index()
         {
-            // Переворачиваем список статей из БД, я вывода последних добавленных
-            List<Article> reverseArticles = Enumerable.Reverse(newsDb.Articles).ToList();
+            // количество выводимых статей на Index
+            int articlesQuantity = 20;
+
+            // Выбираем N последних статей из базы для Index, для вывода последних добавленных
+            var reverseArticlesList = newsDb.Articles.OrderByDescending(x => x.Id).Take(articlesQuantity).ToList();
 
             // передаём список статей в предствление
-            return View(reverseArticles);
+            return View(reverseArticlesList);
         }
 
-        public IActionResult Articles(int page = 0)
+        public IActionResult Articles(int page = 1)
         {
-            List<Article> reverseArticles = Enumerable.Reverse(newsDb.Articles).ToList();
-            int pageSize = 10;
-            int count = reverseArticles.Count();
+            // обозначаем количество статей на странице
+            int articlesOnPage = 5;
 
-            var data = reverseArticles.Skip(page * pageSize).Take(pageSize).ToList();
-            ViewBag.MaxPage = (count / pageSize) - (count % pageSize == 0 ? 1 : 0);
-            ViewBag.Page = page;
-
+            // создаём список статей с информацией о странице
+            var data = new ArticlesListViewModel
+            {
+                Articles = newsDb.Articles
+                            .OrderByDescending(x => x.Id)
+                            .Skip((page - 1) * articlesOnPage)
+                            .Take(articlesOnPage)
+                            .ToList(),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = articlesOnPage,
+                    TotalItems = newsDb.Articles.Count()
+                }
+            };        
             return View(data);
         }
 
@@ -113,12 +128,13 @@ namespace BreakingNewsWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user, [FromServices] ICreateUser createUser)
         {
-
             // создаём пользователя и помещаем в базу
             var _newUser = createUser.CreateNewUser(user);
 
-            // помещаем данные о пользователе в cookie и редиректим в ЛК
-            var claims = new List<Claim>()
+            if(_newUser != null)
+            {
+                // помещаем данные о пользователе в cookie и редиректим в ЛК
+                var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.NameIdentifier, _newUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, _newUser.Name),
@@ -129,9 +145,11 @@ namespace BreakingNewsWeb.Controllers
                         new Claim(ClaimTypes.Country, _newUser.Country??""),
                     };
 
-            var claimsIdentity = new ClaimsIdentity(claims, "CreateUser");
+                var claimsIdentity = new ClaimsIdentity(claims, "CreateUser");
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return Redirect("/Users/PersonalArea");
+            }
 
             return Redirect("/Users/PersonalArea");
         }

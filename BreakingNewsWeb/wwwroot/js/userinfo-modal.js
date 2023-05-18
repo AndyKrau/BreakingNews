@@ -18,3 +18,4 @@ $(".btn-open-modal").click(function () {
     $("#country").html(country);
     $("#postalcode").html(postalcode);
 });
+

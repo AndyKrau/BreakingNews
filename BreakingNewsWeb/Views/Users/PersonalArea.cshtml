@@ -11,16 +11,9 @@
 <div class="row">
     <div class="col-md-2">
         <form class="d-grid gap-2 col-12 mx-right">
-            @try
+            @if ((Role?)ViewData["currentUserRole"] == Role.admin)
             {
-                if ((string)@ViewData["currentUserRole"] == Role.admin.ToString())
-                {
-                    <button class="btn btn-light" asp-controller="Users" asp-action="Users">Users</button>
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                <button clasыs="btn btn-light" asp-controller="Users" asp-action="Users">Users</button>
             }
             <button type="button" 
                     class="btn btn-light btn-sm btn-open-modal" 

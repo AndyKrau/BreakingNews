@@ -1,5 +1,6 @@
 ﻿using BreakingNewsWeb.Migrations.UsersData;
 using BreakingNewsWeb.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BreakingNewsWeb.Services
 {
@@ -12,20 +13,32 @@ namespace BreakingNewsWeb.Services
         }
         public User CreateNewUser(User user)
         {
-            var newUser = new User
+            var existUserName = db.Users.FirstOrDefault(x=> x.Name == user.Name);
+            // надо разобараться тут! 
+            try
             {
-                Name = user.Name,
-                Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
-                Email = user.Email,
-                Country = user.Country,
-                PhoneNumber = user.PhoneNumber,
-                PostalCode = user.PostalCode,
-            };
+                var newUser = new User
+                {
+                    Name = user.Name,
+                    Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
+                    Email = user.Email,
+                    Country = user.Country,
+                    PhoneNumber = user.PhoneNumber,
+                    PostalCode = user.PostalCode,
+                };
 
-            db.Add(newUser);
-            db.SaveChanges();
+                db.Add(newUser);
+                db.SaveChanges();
 
-            return newUser;
+                return newUser;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return null;
+
         }
     }
 }

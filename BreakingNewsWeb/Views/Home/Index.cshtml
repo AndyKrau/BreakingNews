@@ -6,9 +6,12 @@
 
 @{
     int count = 0;
+
     // quantityArticlesOnPage задаёт количество выводимых статей на страницу
     int quantityArticlesOnPage = 20;
+
     var mainArticle = Model.First();
+
     ViewBag.PageInfo = $"Last news on {DateTime.Now.ToShortDateString()}";
 }
 <div class="main">

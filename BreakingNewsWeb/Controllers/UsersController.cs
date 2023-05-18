@@ -12,8 +12,8 @@ namespace BreakingNewsWeb.Controllers
     [Authorize]
     public class UsersController : Controller
     {
-        public UsersContext usersDb;
-        public DbSet<User>? _users;
+        private readonly UsersContext usersDb;
+        private readonly DbSet<User>? _users;
         public UsersController(UsersContext usersContext)
         {
             // получаем список пользователей 

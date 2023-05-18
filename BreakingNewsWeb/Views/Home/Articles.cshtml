@@ -2,13 +2,40 @@
 @using BreakingNewsWeb.Models;
 @using BreakingNewsWeb.Services;
 
-@model IEnumerable<Article>;
+@model ArticlesListViewModel;
 
 @{
     ViewBag.PageInfo = "Articles collection:";
 }
 
-@foreach (var article in Model)
+@*-------------Pagination------------*@
+@*<nav aria-label="pagination top">
+    <ul class="pagination" id="test" >
+        @if (ViewBag.Page > 0)
+        {
+            <li class="page-item" ><a class="page-link" href="@Url.Action("Articles", new { page = ViewBag.Page - 1 })">&laquo;</a></li>
+        }
+
+        @for (int i = 0; i < ViewBag.MaxPage +1; i++)
+        {
+            <li class="page-item pages-@(i+1)" ><a class="page-link" href="@Url.Action("Articles", new { page = i })" >@(i+1)</a></li>
+        }
+
+        @if (ViewBag.Page < ViewBag.MaxPage)
+        {
+            <li class="page-item"><a class="page-link" href="@Url.Action("Articles", new { page = ViewBag.Page + 1 })">&raquo</a></li>
+        }
+    </ul>
+</nav>
+*@
+
+<div page-model="@Model.PagingInfo" page-action="Articles"
+        page-classes-enabled="true"
+        page-class="btn" page-class-normal="btn-outline-secondary"
+        page-class-disabled="disabled"
+        page-class-selected="btn-secondary" class="btn-group dropdown-menu-left mb-4" ></div>
+
+@foreach (var article in Model.Articles)
 {
     <div class="articles">
         <img class="articles__img" src="@article.UrlToImage"/>
@@ -21,7 +48,9 @@
     </div>
 }
 
-<div class="pagination" >
+
+@*-------------Pagination------------*@
+@*<div class="pagination" >
     <ul class="pagination__ul" >
         @if (ViewBag.Page > 0)
         {
@@ -51,4 +80,4 @@
             </li>
         }
     </ul>
-</div>
+</div>*@

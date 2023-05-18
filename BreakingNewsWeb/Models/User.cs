@@ -1,9 +1,12 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BreakingNewsWeb.Models
 {
+    [Index("Name")]
+
     public class User
     {
         // делаем поле id автоинкрементным
@@ -31,6 +34,7 @@ namespace BreakingNewsWeb.Models
 
         public string? Country { get; set; } = string.Empty;
         public Role Role { get; set; } = Role.user;
+
         //public DateTime CreatedDatetime { get; set; }
 
     }

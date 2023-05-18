@@ -1,5 +1,8 @@
-﻿namespace BreakingNewsWeb.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
+namespace BreakingNewsWeb.Models;
+
+[Index("Id")]
 public partial class Article
 {
     public int Id { get; set; }
