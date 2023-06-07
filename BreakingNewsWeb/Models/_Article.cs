@@ -3,7 +3,7 @@
 namespace BreakingNewsWeb.Models;
 
 [Index("Id")]
-public partial class Article
+public partial class _Article
 {
     public int Id { get; set; }
 

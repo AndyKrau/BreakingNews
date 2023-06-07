@@ -27,7 +27,6 @@ internal class Program
         JToken? articles = jsonResult["articles"];
 
         // пустой лист статей для помещения туда информации из JToken
-        //List<Article> articleListFromAPI = new List<Article>();
         List<Article> articleListFromAPI = new List<Article>();
 
         // По каждой статье создаём экземпляр класса Article и помещаем его в список статей articleListFromAPI
@@ -59,7 +58,6 @@ internal class Program
         // на этот момент у нас есть список articleListFromAPI<Article> со статьями полученными из API
 
         // для избежания дублирования статей в базе, перед добавлением статьи проверяем на совпадения
-        // using (ApplicationContext db = new ApplicationContext())
         using (NewsContext db = new NewsContext())
         {
             int addedArticles = 0;

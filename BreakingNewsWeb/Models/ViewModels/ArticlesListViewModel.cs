@@ -1,4 +1,4 @@
-﻿using BreakingNewsWeb.Models;
+﻿using DBConnection.Models.Classes;
 
 namespace BreakingNewsWeb.Models.ViewModels
 {

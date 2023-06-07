@@ -22,4 +22,8 @@
     <Folder Include="wwwroot\img\icon\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DBConnection\DBConnection.csproj" />
+  </ItemGroup>
 </Project>

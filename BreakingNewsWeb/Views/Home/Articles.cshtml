@@ -8,27 +8,6 @@
     ViewBag.PageInfo = "Articles collection:";
 }
 
-@*-------------Pagination------------*@
-@*<nav aria-label="pagination top">
-    <ul class="pagination" id="test" >
-        @if (ViewBag.Page > 0)
-        {
-            <li class="page-item" ><a class="page-link" href="@Url.Action("Articles", new { page = ViewBag.Page - 1 })">&laquo;</a></li>
-        }
-
-        @for (int i = 0; i < ViewBag.MaxPage +1; i++)
-        {
-            <li class="page-item pages-@(i+1)" ><a class="page-link" href="@Url.Action("Articles", new { page = i })" >@(i+1)</a></li>
-        }
-
-        @if (ViewBag.Page < ViewBag.MaxPage)
-        {
-            <li class="page-item"><a class="page-link" href="@Url.Action("Articles", new { page = ViewBag.Page + 1 })">&raquo</a></li>
-        }
-    </ul>
-</nav>
-*@
-
 <div page-model="@Model.PagingInfo" page-action="Articles"
         page-classes-enabled="true"
         page-class="btn" page-class-normal="btn-outline-secondary"
@@ -48,36 +27,3 @@
     </div>
 }
 
-
-@*-------------Pagination------------*@
-@*<div class="pagination" >
-    <ul class="pagination__ul" >
-        @if (ViewBag.Page > 0)
-        {
-            <li class="pagination__btn-arrow" >
-                <a class="pagination__a" href="@Url.Action("Articles", new { page = ViewBag.Page - 1 })">
-                    &laquo;
-                </a>
-            </li>
-        }
-
-        @for (int i = 0; i < ViewBag.MaxPage +1; i++)
-        {
-            <li class="pagination__btn page-@i" >
-                <a class="pagination__a" href="@Url.Action("Articles", new { page = i })" >
-                    @i
-                </a> 
-            </li>
-        }
-
-        @if (ViewBag.Page < ViewBag.MaxPage)
-        {
-            <li class="pagination__btn-arrow">
-                <a class="pagination__a" href="@Url.Action("Articles", new { page = ViewBag.Page + 1 })" 
-                    >
-                    &raquo;
-                </a>
-            </li>
-        }
-    </ul>
-</div>*@

@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Security.Claims;
 using System.Threading;
+using DBConnection.Models.Contexts;
+using DBConnection.Models.Classes;
 
 namespace BreakingNewsWeb.Controllers
 {
@@ -26,7 +28,7 @@ namespace BreakingNewsWeb.Controllers
             // получаем контекст usersDB
             usersDb = usersContext;
 
-            // получаем контекст edudb
+            // получаем контекст образовательной edudb
             educationDb = educationContext;
 
             #region Adding default admin
@@ -52,7 +54,7 @@ namespace BreakingNewsWeb.Controllers
             int articlesQuantity = 20;
 
             // Выбираем N последних статей из базы для Index, для вывода последних добавленных
-            var reverseArticlesList = await newsDb.Articles.OrderByDescending(a => a.Id).Take(articlesQuantity).ToListAsync();
+            var reverseArticlesList = await newsDb.articles.OrderByDescending(a => a.Id).Take(articlesQuantity).ToListAsync();
 
             // передаём список статей в предствление
             return View(reverseArticlesList);
@@ -61,12 +63,12 @@ namespace BreakingNewsWeb.Controllers
         public IActionResult Articles(int page = 1)
         {
             // обозначаем количество статей на странице
-            int articlesOnPage = 5;
+            int articlesOnPage = 10;
 
             // создаём список статей с информацией о странице
             var data = new ArticlesListViewModel
             {
-                Articles = newsDb.Articles
+                Articles = newsDb.articles
                             .OrderByDescending(x => x.Id)
                             .Skip((page - 1) * articlesOnPage)
                             .Take(articlesOnPage)
@@ -75,7 +77,7 @@ namespace BreakingNewsWeb.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = articlesOnPage,
-                    TotalItems = newsDb.Articles.Count()
+                    TotalItems = newsDb.articles.Count()
                 }
             };
             return View(data);
