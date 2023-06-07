@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DBConnection.Models.Classes;
+using DBConnection.Models.Contexts;
 using NewsAPIParser;
 using Newtonsoft.Json.Linq;
-using System;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        // ключи подключения необходимо скрыть
         var key = "d172fecfb2a84ede9339e513fb4fea35";
         var country = "us";
 
@@ -26,6 +27,7 @@ internal class Program
         JToken? articles = jsonResult["articles"];
 
         // пустой лист статей для помещения туда информации из JToken
+        //List<Article> articleListFromAPI = new List<Article>();
         List<Article> articleListFromAPI = new List<Article>();
 
         // По каждой статье создаём экземпляр класса Article и помещаем его в список статей articleListFromAPI
@@ -35,13 +37,13 @@ internal class Program
             Article article = new Article()
             {
                 Source = (string?)item["source"]?["name"],
-                Author = (string?)item["author"] ?? "Unknown",
-                Title = (string?)item["title"] ?? "Unknown",
-                Description = (string?)item["description"] ?? "Unknown",
-                Url = (string?)item["url"] ?? "Unknown",
-                UrlToImage = (string?)item["urlToImage"] ?? "Unknown",
+                Author = (string?)item["author"] ?? "",
+                Title = (string?)item["title"] ?? "",
+                Description = (string?)item["description"] ?? "",
+                Url = (string?)item["url"] ?? "",
+                UrlToImage = (string?)item["urlToImage"] ?? "",
                 PublishedAt = (DateTime?)item["publishedAt"],
-                Content = (string?)item["content"] ?? "Unknown"
+                Content = (string?)item["content"] ?? ""
             };
 
             // добавляем статью в лист articleListFromAPI
@@ -56,9 +58,9 @@ internal class Program
 
         // на этот момент у нас есть список articleListFromAPI<Article> со статьями полученными из API
 
-        // для проверки дубликатов при записи в базу создаём спикок заголовков статей
-        // в дальнейшем будем сравнивать по этим заголовками заголовки полученных статей, для избежания дублирования статей в базе
-        using (ApplicationContext db = new ApplicationContext())
+        // для избежания дублирования статей в базе, перед добавлением статьи проверяем на совпадения
+        // using (ApplicationContext db = new ApplicationContext())
+        using (NewsContext db = new NewsContext())
         {
             int addedArticles = 0;
             int matchesFound = 0;
@@ -66,10 +68,10 @@ internal class Program
             foreach (var item in articleListFromAPI)
             {
                 // проверяем заголовок каждой статьи из списка на наличие такой же в базе по index полю
-                var existArticle = db.Articles.FirstOrDefault(a => a.Title == item.Title);
+                var existArticle = db.articles.FirstOrDefault(a => a.Title == item.Title);
                 if (existArticle == null)
                 {
-                    db.Articles.Add(item);
+                    db.articles.Add(item);
                     addedArticles++;
                 }
                 else matchesFound++;
@@ -80,7 +82,7 @@ internal class Program
 
             Console.WriteLine($"Added to DB {addedArticles} articles.");
             Console.WriteLine($"Had find matches in DB for {matchesFound} articles.");
-            Console.WriteLine($"Current quantity of articles in DB: {db.Articles!.Count()}");
+            Console.WriteLine($"Current quantity of articles in DB: {db.articles!.Count()}");
         }
     }
 }

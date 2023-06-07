@@ -48,13 +48,13 @@ namespace BreakingNewsWeb.Controllers
         }
 
         // Users/PersonalArea
-        // Modal window Edit. Safe changes of users data
+        // Modal window Edit.Сохраняет данные после изменения карточки
         [HttpPost]
         public async Task<IActionResult> SaveChange(User user)
         {
             // находим userId
             var currentUserNameIdentifier = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentUserId = Int32.Parse(currentUserNameIdentifier!);
+            var currentUserId = Int32.Parse(currentUserNameIdentifier);
 
             // находим пользователя в базе по userId
             var existUser = usersDb.Users.FirstOrDefault(u => u.UserId == currentUserId);

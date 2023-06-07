@@ -36,7 +36,7 @@ namespace BreakingNewsWeb.Infrastructure
                 IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
                 TagBuilder result = new TagBuilder("div");
 
-                // Previous кнопка
+                // кнопка Previous
                 TagBuilder tagPrevious = new TagBuilder("a");
                 tagPrevious.Attributes["href"] = urlHelper.Action(PageAction, new { page = (PageModel.CurrentPage - 1) });
                 tagPrevious.AddCssClass(PageClass);
@@ -62,7 +62,7 @@ namespace BreakingNewsWeb.Infrastructure
                     result.InnerHtml.AppendHtml(tag);
                 }
 
-                // Next кнопка
+                // кнопка Next 
                 TagBuilder tagNext = new TagBuilder("a");
                 tagNext.Attributes["href"] = urlHelper.Action(PageAction, new { page = (PageModel.CurrentPage + 1) });
                 tagNext.AddCssClass(PageClass);

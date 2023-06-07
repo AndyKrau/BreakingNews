@@ -4,7 +4,7 @@ namespace NewsAPIParser
 {
     public class GetRequest
     {
-        string? _address;
+        readonly string? _address;
         
         public string? Responce { get; set; }
 
@@ -18,10 +18,13 @@ namespace NewsAPIParser
         public void Run()
         {
             HttpWebRequest _request;
+
             // создание запроса
             _request = (HttpWebRequest)WebRequest.Create(_address);
+
             // указание метода запроса
             _request.Method = "GET";
+
             // обходим защиту от анонимных запросов на портале newsAPI
             _request.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 OPR/97.0.0.0");//указание заголовка User agent, обход защиты от no-name запросов
 

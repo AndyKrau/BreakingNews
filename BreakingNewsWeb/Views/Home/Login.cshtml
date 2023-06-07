@@ -8,9 +8,9 @@
    <div class="col-md-4 offset-md-4">
        <form method="post">
             <label for="username" class="form-label mt-2">Username:</label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username">
+                <input type="text" name="username" class="form-control" id="username" placeholder="Enter your username" required>
             <label for="username" class="form-label mt-2">Password:</label>
-                <input type="password" name="password" class="form-control" id="password"  placeholder="Enter your password">
+                <input type="password" name="password" class="form-control" id="password"  placeholder="Enter your password" required>
             <button class="btn btn-primary mt-3">Login</button>
         </form>
         <a class="btn btn-primary mt-3" asp-controller="Home" asp-action="CreateUser">Create user</a>

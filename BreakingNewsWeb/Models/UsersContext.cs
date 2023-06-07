@@ -15,6 +15,6 @@ public class UsersContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
-            .HasIndex(user => new { user.Name}).IsUnique(true);
+            .HasIndex(user => new { user.Name }).IsUnique(true);
     }
 }

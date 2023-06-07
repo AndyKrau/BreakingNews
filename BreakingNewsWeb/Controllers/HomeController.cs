@@ -1,10 +1,14 @@
 ﻿using BreakingNewsWeb.Migrations.UsersData;
 using BreakingNewsWeb.Models;
+using BreakingNewsWeb.Models.TestQueryToDb;
 using BreakingNewsWeb.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System.Security.Claims;
+using System.Threading;
 
 namespace BreakingNewsWeb.Controllers
 {
@@ -12,14 +16,18 @@ namespace BreakingNewsWeb.Controllers
     {
         private readonly NewsContext newsDb;
         private readonly UsersContext usersDb;
+        private readonly EducationContext educationDb;
 
-        public HomeController(NewsContext newsContext, UsersContext usersContext)
+        public HomeController(NewsContext newsContext, UsersContext usersContext, EducationContext educationContext)
         {
             // получаем контекст newsDB
             newsDb = newsContext;
 
             // получаем контекст usersDB
             usersDb = usersContext;
+
+            // получаем контекст edudb
+            educationDb = educationContext;
 
             #region Adding default admin
             // var newUser = new User
@@ -38,13 +46,13 @@ namespace BreakingNewsWeb.Controllers
 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // количество выводимых статей на Index
             int articlesQuantity = 20;
 
             // Выбираем N последних статей из базы для Index, для вывода последних добавленных
-            var reverseArticlesList = newsDb.Articles.OrderByDescending(x => x.Id).Take(articlesQuantity).ToList();
+            var reverseArticlesList = await newsDb.Articles.OrderByDescending(a => a.Id).Take(articlesQuantity).ToListAsync();
 
             // передаём список статей в предствление
             return View(reverseArticlesList);
@@ -69,12 +77,46 @@ namespace BreakingNewsWeb.Controllers
                     ItemsPerPage = articlesOnPage,
                     TotalItems = newsDb.Articles.Count()
                 }
-            };        
+            };
             return View(data);
         }
 
         public IActionResult About()
         {
+            var result = educationDb.orders.Include(p => p.Product);
+
+            var resultLinq = from o in educationDb.orders
+                             join p in educationDb.products
+                             on o.ProductId equals p.Id into ordersProductsGroup
+                             from subProducts in ordersProductsGroup.DefaultIfEmpty()
+                             select new AllQueries
+                             {
+                                 orderNumder = o.Id,
+                                 orderTime = o.CreatedAt,
+                                 orderPrice = o.Price,
+                                 productName = subProducts.ProductName,
+                                 productCompany = subProducts.Company,
+                                 productPrice = subProducts.Price,
+                             };
+
+            var resultLinq2 = educationDb.orders.Join(educationDb.products,
+                                                    o => o.ProductId,
+                                                    p => p.Id,
+                                                    (o, p) => new
+                                                    {
+                                                        orderNumder = o.Id,
+                                                        orderTime = o.CreatedAt,
+                                                        orderPrice = o.Price,
+                                                        productName = p.ProductName,
+                                                        productCompany = p.Company,
+                                                        productPrice = p.Price,
+                                                    })
+                                                    ;
+
+            ViewBag.OrderByNav = result;
+            ViewBag.OrdersByLINQ = resultLinq;
+            ViewBag.OrdersByLINQ2 = resultLinq2;
+
             return View();
         }
 
@@ -86,14 +128,18 @@ namespace BreakingNewsWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
         {
+            // Поиск пользователя по имени в базе
             var existUser = usersDb.Users.FirstOrDefault(x => x.Name == username);
 
-            bool isValidPass = BCrypt.Net.BCrypt.Verify(password, existUser?.Password);
+            // Если пользователь найден проверяем пароль
+            if (existUser != null)
+            {
+                bool isValidPass = BCrypt.Net.BCrypt.Verify(password, existUser?.Password);
 
                 if (isValidPass)
                 {
                     var claims = new List<Claim>()
-                    { 
+                    {
                         new Claim(ClaimTypes.NameIdentifier, existUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, username),
                         new Claim(ClaimTypes.Role, existUser.Role.ToString()),
@@ -109,6 +155,9 @@ namespace BreakingNewsWeb.Controllers
 
                     return Redirect(ReturnUrl == null ? "/Users/PersonalArea" : ReturnUrl);
                 }
+
+                else return View();
+            }
 
             return View();
         }
@@ -131,7 +180,7 @@ namespace BreakingNewsWeb.Controllers
             // создаём пользователя и помещаем в базу
             var _newUser = createUser.CreateNewUser(user);
 
-            if(_newUser != null)
+            if (_newUser != null)
             {
                 // помещаем данные о пользователе в cookie и редиректим в ЛК
                 var claims = new List<Claim>()

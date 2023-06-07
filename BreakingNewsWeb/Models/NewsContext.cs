@@ -9,5 +9,4 @@ public class NewsContext : DbContext
     {
         Database.EnsureCreated();
     }
-
 }
