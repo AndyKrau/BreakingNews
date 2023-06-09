@@ -1,14 +1,11 @@
-﻿using BreakingNewsWeb.Migrations.UsersData;
-using BreakingNewsWeb.Models;
+﻿using BreakingNewsWeb.Models;
 using BreakingNewsWeb.Models.TestQueryToDb;
 using BreakingNewsWeb.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using System.Security.Claims;
-using System.Threading;
 using DBConnection.Models.Contexts;
 using DBConnection.Models.Classes;
 
@@ -112,8 +109,7 @@ namespace BreakingNewsWeb.Controllers
                                                         productName = p.ProductName,
                                                         productCompany = p.Company,
                                                         productPrice = p.Price,
-                                                    })
-                                                    ;
+                                                    });
 
             ViewBag.OrderByNav = result;
             ViewBag.OrdersByLINQ = resultLinq;
@@ -131,7 +127,7 @@ namespace BreakingNewsWeb.Controllers
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
         {
             // Поиск пользователя по имени в базе
-            var existUser = usersDb.Users.FirstOrDefault(x => x.Name == username);
+            var existUser = usersDb.users.FirstOrDefault(x => x.Name == username);
 
             // Если пользователь найден проверяем пароль
             if (existUser != null)
@@ -140,11 +136,12 @@ namespace BreakingNewsWeb.Controllers
 
                 if (isValidPass)
                 {
+                    var userRoleName = usersDb.roles.FirstOrDefault(x => x.RoleId.ToString() == existUser.RoleId.ToString())?.RoleName.ToString();
                     var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.NameIdentifier, existUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, username),
-                        new Claim(ClaimTypes.Role, existUser.Role.ToString()),
+                        new Claim(ClaimTypes.Role, userRoleName),
                         new Claim(ClaimTypes.Email, existUser.Email),
                         new Claim(ClaimTypes.MobilePhone, existUser.PhoneNumber??""),
                         new Claim(ClaimTypes.PostalCode, existUser.PostalCode??""),
@@ -155,7 +152,7 @@ namespace BreakingNewsWeb.Controllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                    return Redirect(ReturnUrl == null ? "/Users/PersonalArea" : ReturnUrl);
+                    return Redirect(ReturnUrl ?? "/Users/PersonalArea");
                 }
 
                 else return View();
@@ -189,7 +186,7 @@ namespace BreakingNewsWeb.Controllers
                     {
                         new Claim(ClaimTypes.NameIdentifier, _newUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, _newUser.Name),
-                        new Claim(ClaimTypes.Role, _newUser.Role.ToString()),
+                        new Claim(ClaimTypes.Role, _newUser.RoleId.ToString()),
                         new Claim(ClaimTypes.Email, _newUser.Email),
                         new Claim(ClaimTypes.MobilePhone, _newUser.PhoneNumber??""),
                         new Claim(ClaimTypes.PostalCode, _newUser.PostalCode??""),
@@ -215,11 +212,11 @@ namespace BreakingNewsWeb.Controllers
         {
             if (id != null)
             {
-                var existUser = usersDb.Users.FirstOrDefault(a => a.UserId == id);
+                var existUser = usersDb.users.FirstOrDefault(a => a.UserId == id);
 
                 if (existUser != null)
                 {
-                    usersDb.Users.Entry(existUser).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                    usersDb.users.Entry(existUser).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
                     await usersDb.SaveChangesAsync();
                     return Redirect("/Users/Users");
                 }

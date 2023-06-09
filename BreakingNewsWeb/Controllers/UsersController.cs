@@ -6,6 +6,10 @@ using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using DBConnection.Models.Contexts;
+using DBConnection.Models.Classes;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace BreakingNewsWeb.Controllers
 {
@@ -14,10 +18,11 @@ namespace BreakingNewsWeb.Controllers
     {
         private readonly UsersContext usersDb;
         private readonly DbSet<User>? _users;
+
         public UsersController(UsersContext usersContext)
         {
             // получаем список пользователей 
-            _users = usersContext.Users;
+            _users = usersContext.users;
 
             usersDb = usersContext;
         }
@@ -27,18 +32,40 @@ namespace BreakingNewsWeb.Controllers
         [Authorize(Policy = "OnlyForAdmin")]
         public IActionResult Users()
         {
-            return View(_users);
+            var usersListWithRoleName = usersDb.users.Join(usersDb.roles,
+                                        u => u.RoleId,
+                                        r => r.RoleId,
+                                        (u, r) => new
+                                        {
+                                            UserId = u.UserId,
+                                            Name = u.Name,
+                                            Email = u.Email,
+                                            PhoneNumber = u.PhoneNumber,
+                                            RoleId = u.RoleId,
+                                            RoleName = r.RoleName,
+                                            Country = u.Country,
+                                            PostalCode = u.PostalCode,
+                                        });
+            ViewBag.Users = usersListWithRoleName;
+
+            return View(usersListWithRoleName);
         }
 
         // Users/PersonalArea
         public IActionResult PersonalArea()
         {
+            ViewBag.AdminRole = usersDb.roles.FirstOrDefault(x=> x.RoleName == "admin")?.RoleName.ToString();
+
             // получаем данные пользователя из куки для карточки пользователя
             var context = HttpContext;
 
             // определяем переменные для модального окна
             ViewData["currentUserName"] = context.User.FindFirst(ClaimTypes.Name)?.Value;
             ViewData["currentUserRole"] = context.User.FindFirst(ClaimTypes.Role)?.Value;
+
+            //var roleName = context.User.FindFirst(ClaimTypes.Role)?.Value;
+            //ViewData["currentUserRoleName"] = usersDb.roles.FirstOrDefault(x => x.RoleId.ToString() == roleName)?.RoleName.ToString(); 
+
             ViewData["currentUserEmail"] = context.User.FindFirst(ClaimTypes.Email)?.Value;
             ViewData["currentUserPostalCode"] = context.User.FindFirst(ClaimTypes.PostalCode)?.Value;
             ViewData["currentUserCountry"] = context.User.FindFirst(ClaimTypes.Country)?.Value;
@@ -57,7 +84,7 @@ namespace BreakingNewsWeb.Controllers
             var currentUserId = Int32.Parse(currentUserNameIdentifier);
 
             // находим пользователя в базе по userId
-            var existUser = usersDb.Users.FirstOrDefault(u => u.UserId == currentUserId);
+            var existUser = usersDb.users.FirstOrDefault(u => u.UserId == currentUserId);
 
             if (existUser != null)
             {
@@ -76,7 +103,7 @@ namespace BreakingNewsWeb.Controllers
                     {
                         new Claim(ClaimTypes.NameIdentifier, existUser.UserId.ToString()),
                         new Claim(ClaimTypes.Name, existUser.Name),
-                        new Claim(ClaimTypes.Role, existUser.Role.ToString()),
+                        new Claim(ClaimTypes.Role, existUser.RoleId.ToString()),
                         new Claim(ClaimTypes.Email, existUser.Email),
                         new Claim(ClaimTypes.MobilePhone, existUser.PhoneNumber??""),
                         new Claim(ClaimTypes.PostalCode, existUser.PostalCode??""),

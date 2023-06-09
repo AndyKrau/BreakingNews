@@ -1,9 +1,11 @@
 ﻿@using BreakingNewsWeb.Models;
+@using DBConnection.Models.Classes;
+@using System.Collections;
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@model IEnumerable<User>;
-
+@*@model IEnumerable<User>;
+*@
 @{
     ViewBag.PageInfo = "Users";
 }
@@ -24,13 +26,13 @@
                 <td></td>
                 <td></td>
             </tr>
-            @foreach (var user in Model)
+            @foreach (var user in ViewBag.Users)
             {
                 <tr>
                     <td>@user.UserId</td>
                     <td>@user.Name</td>
                     <td>@user.Email</td>
-                    <td>@user.Role</td>
+                    <td>@user.RoleName</td>
                     <td>
                         <button type="button" 
                                 class="btn btn-light btn-sm btn-open-modal" 
@@ -40,7 +42,7 @@
                                 data-name="@user.Name" 
                                 data-email="@user.Email"
                                 data-phone="@user.PhoneNumber"
-                                data-role="@user.Role"
+                                data-role="@user.RoleName"
                                 data-country="@user.Country"
                                 data-postalcode="@user.PostalCode">More info
                         </button>

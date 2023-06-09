@@ -1,6 +1,7 @@
-﻿using BreakingNewsWeb.Migrations.UsersData;
-using BreakingNewsWeb.Models;
+﻿using BreakingNewsWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using DBConnection.Models.Contexts;
+using DBConnection.Models.Classes;
 
 namespace BreakingNewsWeb.Services
 {
@@ -13,11 +14,11 @@ namespace BreakingNewsWeb.Services
         }
         public User CreateNewUser(User user)
         {
-            var existUserName = db.Users.FirstOrDefault(x=> x.Name == user.Name);
+            var existUserName = db.users.FirstOrDefault(x=> x.Name == user.Name);
             // надо разобараться тут! 
             try
             {
-                var newUser = new User
+                User newUser = new()
                 {
                     Name = user.Name,
                     Password = BCrypt.Net.BCrypt.HashPassword(user.Password),

@@ -2,6 +2,7 @@
 using DBConnection.Models.Contexts;
 using NewsAPIParser;
 using Newtonsoft.Json.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 internal class Program
 {
@@ -27,13 +28,13 @@ internal class Program
         JToken? articles = jsonResult["articles"];
 
         // пустой лист статей для помещения туда информации из JToken
-        List<Article> articleListFromAPI = new List<Article>();
+        List<Article> articleListFromAPI = new();
 
         // По каждой статье создаём экземпляр класса Article и помещаем его в список статей articleListFromAPI
         foreach (var item in articles!)
         {
             // создание экз класса и наполение его данными статьи
-            Article article = new Article()
+            Article article = new()
             {
                 Source = (string?)item["source"]?["name"],
                 Author = (string?)item["author"] ?? "",
@@ -58,7 +59,7 @@ internal class Program
         // на этот момент у нас есть список articleListFromAPI<Article> со статьями полученными из API
 
         // для избежания дублирования статей в базе, перед добавлением статьи проверяем на совпадения
-        using (NewsContext db = new NewsContext())
+        using (NewsContext db = new())
         {
             int addedArticles = 0;
             int matchesFound = 0;
@@ -82,5 +83,6 @@ internal class Program
             Console.WriteLine($"Had find matches in DB for {matchesFound} articles.");
             Console.WriteLine($"Current quantity of articles in DB: {db.articles!.Count()}");
         }
+
     }
 }

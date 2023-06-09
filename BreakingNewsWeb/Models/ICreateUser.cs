@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using DBConnection.Models.Classes;
 
 namespace BreakingNewsWeb.Models
 {

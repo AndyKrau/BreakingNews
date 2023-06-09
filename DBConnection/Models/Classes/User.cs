@@ -1,15 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BreakingNewsWeb.Models
+namespace DBConnection.Models.Classes
 {
-    [Index("Name")]
-
     public class User
     {
-        // делаем поле id автоинкрементным
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "No name provided")]
@@ -32,15 +27,16 @@ namespace BreakingNewsWeb.Models
         public string? PostalCode { get; set; } = string.Empty;
 
         public string? Country { get; set; } = string.Empty;
-        public Role Role { get; set; } = Role.user;
 
-        //public DateTime CreatedDatetime { get; set; }
+        [ForeignKey("Role")]
+        public int RoleId { get; set; } = 2;
+        public Role? Role { get; set; }
 
-    }
-
-    public enum Role
-    {
-        admin = 0,
-        user = 1
+        public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
     }
 }
+
+//[Column("customer_id")]
+//[ForeignKey("Customer")]
+//public int CustomerId { get; set; }
+//public Customer? Customer { get; set; }
