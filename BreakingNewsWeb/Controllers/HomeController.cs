@@ -13,15 +13,11 @@ namespace BreakingNewsWeb.Controllers
     public class HomeController : Controller
     {
         private readonly NewsContext newsDb;
-        private readonly UsersContext usersDb;
 
         public HomeController(NewsContext newsContext, UsersContext usersContext)
         {
             // получаем контекст newsDB
             newsDb = newsContext;
-
-            // получаем контекст usersDB
-            usersDb = usersContext;
         }
 
         public async Task<IActionResult> Index()
