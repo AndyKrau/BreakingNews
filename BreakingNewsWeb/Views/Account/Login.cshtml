@@ -1,13 +1,14 @@
 ﻿@using BreakingNewsWeb.Models;
-@model RegisterViewModel;
+@model LoginViewModel;
 
 @{
-    ViewBag.PageInfo = $"Register new user:";
+    ViewBag.PageInfo = $"Login:";
 }
 
 <div class="row">
    <div class="col-md-4 offset-md-4">
-        <form method="post" asp-controller="Account" asp-action="Register">
+        <form method="post" asp-controller="Account" asp-action="Login"
+              asp-route-returnUrl="@Model.ReturnUrl">
             <div asp-validation-summary="ModelOnly"></div>
             <div>
                 <label asp-for="Email" class="form-label mt-2"></label>
@@ -16,17 +17,17 @@
             </div>
             <div>
                 <label asp-for="Password" class="form-label mt-2"></label>
-                <input asp-for="Password"  class="form-control"/>
+                <input asp-for="Password" class="form-control"/>
                 <span asp-validation-for="Password"></span>
             </div>
             <div>
-                <label asp-for="PasswordConfirm" class="form-label mt-2"></label><br />
-                <input asp-for="PasswordConfirm" class="form-control"/>
-                <span asp-validation-for="PasswordConfirm"></span>
+                <input asp-for="RememberMe"/>
+                <label asp-for="RememberMe" class="form-label mt-2"></label>
             </div>
             <div>
-                <input class="btn btn-primary mt-3" type="submit" value="Register" />
+                <input class="btn btn-primary mt-3" type="submit" value="Enter" />
             </div>
         </form>
+        <a class="btn btn-primary mt-3" asp-controller="Account" asp-action="Register">Register</a>
    </div>
 </div>
