@@ -34,7 +34,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="header__current-user">
-                            <a asp-controller="Users" asp-action="PersonalArea" >Hello, @User.Identity.Name</a>
+                            <a asp-controller="Users" asp-action="Card" asp-route-name="@User.Identity.Name">Hello, @User.Identity.Name</a>
                         </div>
                         <form method="post">
                             <button class="btn" asp-controller="Account" asp-action="Logout">

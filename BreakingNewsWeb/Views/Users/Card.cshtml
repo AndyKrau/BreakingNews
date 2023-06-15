@@ -1,0 +1,117 @@
+﻿@using DBConnection.Models.Classes;
+@model User;
+
+@{
+    ViewBag.Title = "User card:";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <form class="d-grid gap-2 col-12 mx-right">
+            <button class="btn btn-light" asp-controller="Users" asp-action="Users">Users</button>
+            <button type="button" 
+                    class="btn btn-light btn-sm btn-open-modal" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#exampleModal" 
+                    data-email="@Model.Email"
+                    data-phone="@Model.PhoneNumber"
+                    data-country="@Model.Country"
+                    data-city="@Model.City"
+                    data-postalcode="@Model.PostalCode">Edit
+            </button>
+        </form>
+    </div>
+
+    <div class="col-md-9 offset-md-1">
+        <div class="row"> 
+             <div class="col-md-3">
+                <img src="~/img/unknown-user.jpg" class="img-thumbnail" alt="img-thumbnail">
+             </div>
+             <div class="col-md-9 ml-4">
+                 <h4>User information:</h4>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">E-mail: </span><span>@Model.Email</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Date of birth: </span><span>@Model.DateOfBirth</span>
+                 </div>
+                 <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Phone number: </span><span>@Model.PhoneNumber</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Country: </span><span>@Model.Country</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">City: </span><span>@Model.City</span>
+                 </div>
+                  <div class="mt-2 mb-2">
+                    <span class="fw-bolder">Postal code: </span><span>@Model.PostalCode</span>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно Edit -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">User information:</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+          </div>
+          <div class="modal-body" id="modal-body" >
+                <div class="col-md-6 offset-md-3 mb-3">
+                    <img src="~/img/unknown-user.jpg" class="img-thumbnail" alt="img-thumbnail">
+                    <label for="formFile" class="form-label mt-3">Download photo</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+                <div class="col-md-10 offset-md-1 ml-4">
+                    <form method="post" id="form-edit">
+                        <div class="row mb-3">
+                           <label asp-for="Email" class="col-sm-4 col-form-label col-form-label-sm">E-mail: </label>
+                           <div class="col-sm-8">
+                              <input type="email" class="form-control" asp-for="Email" value="@Model.Email">
+                           </div>
+                        </div>
+                        <div class="row mb-3">
+                           <label asp-for="DateOfBirth" class="col-sm-4 col-form-label col-form-label-sm">Birthday: </label>
+                           <div class="col-sm-8">
+                              <input type="text" class="form-control" asp-for="DateOfBirth" value="@Model.DateOfBirth">
+                           </div>
+                        </div>
+                        <div class="row mb-3">
+                           <label asp-for="PhoneNumber" class="col-sm-4 col-form-label col-form-label-sm">Phone number: </label>
+                           <div class="col-sm-8">
+                              <input type="text" class="form-control" asp-for="PhoneNumber" value="@Model.PhoneNumber">
+                           </div>
+                        </div>
+                        <div class="row mb-3">
+                           <label asp-for="Country" class="col-sm-4 col-form-label col-form-label-sm">Country: </label>
+                           <div class="col-sm-8">
+                              <input type="text" class="form-control" asp-for="Country" value="@Model.Country">
+                           </div>
+                        </div>
+                        <div class="row mb-3">
+                           <label asp-for="City" class="col-sm-4 col-form-label col-form-label-sm">Name: </label>
+                           <div class="col-sm-8">
+                              <input type="text" class="form-control" asp-for="City" value="@Model.City">
+                           </div>
+                        </div>
+                        <div class="row mb-3">
+                           <label asp-for="PostalCode" class="col-sm-4 col-form-label col-form-label-sm">Postal code: </label>
+                           <div class="col-sm-8">
+                              <input type="text" class="form-control" asp-for="PostalCode" value="@Model.PostalCode">
+                           </div>
+                        </div>
+                    </form>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button form="form-edit" class="btn btn-secondary" asp-controller="Users" asp-action="Edit" asp-route-id="@Model.Id">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
