@@ -11,7 +11,15 @@ builder.Services.AddDbContext<NewsContext>();
 builder.Services.AddDbContext<UsersContext>();
 
 // специфичные для Identity сервисы
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UsersContext>();
+builder.Services.AddIdentity<User, IdentityRole>(option =>
+    {
+        option.Password.RequiredLength = 4;
+        option.Password.RequireNonAlphanumeric = false;
+        option.Password.RequireLowercase = false;
+        option.Password.RequireUppercase = false;
+        option.Password.RequireDigit = false;
+    })
+    .AddEntityFrameworkStores<UsersContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

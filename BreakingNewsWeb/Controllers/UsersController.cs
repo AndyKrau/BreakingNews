@@ -1,11 +1,13 @@
 ﻿using BreakingNewsWeb.Models.ViewModels;
 using DBConnection.Models.Classes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace BreakingNewsWeb.Controllers
 {
+    
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -27,18 +29,21 @@ namespace BreakingNewsWeb.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Users()
         {
             return View(_userManager.Users.ToList());
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -60,6 +65,7 @@ namespace BreakingNewsWeb.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
@@ -81,6 +87,7 @@ namespace BreakingNewsWeb.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -155,9 +162,8 @@ namespace BreakingNewsWeb.Controllers
             return View(model);
         }
 
-
-
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
