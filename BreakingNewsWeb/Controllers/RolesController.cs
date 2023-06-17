@@ -65,7 +65,9 @@ namespace BreakingNewsWeb.Controllers
 
         public async Task<IActionResult> Edit(string userId)
         {
-            User user =await _userManager.FindByIdAsync(userId);
+
+
+            User user = await _userManager.FindByIdAsync(userId);
             if (user != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -90,7 +92,7 @@ namespace BreakingNewsWeb.Controllers
             if (user != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
-                var allRoles = _roleManager.Roles.ToList();
+                //var allRoles = _roleManager.Roles.ToList();
 
                 var addedRoles = roles.Except(userRoles);
                 var removedRoles = roles.Except(roles);

@@ -11,10 +11,14 @@ namespace BreakingNewsWeb.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(UserManager<User> userManager)
+        public object Viewbag { get; private set; }
+
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IActionResult> Card()
@@ -61,6 +65,10 @@ namespace BreakingNewsWeb.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
+
+                
+
+
             }
             return View(model);
         }
@@ -95,9 +103,6 @@ namespace BreakingNewsWeb.Controllers
                 User user = await _userManager.FindByIdAsync(model.Id);
                 if(user != null)
                 {
-                    //DateTime dt = (DateTime)model.DateOfBirth;
-                    //DateTime ut = DateTime.SpecifyKind((DateTime)model.DateOfBirth, DateTimeKind.Utc);
-
                     user.Email = model.Email;
                     user.PhoneNumber = model.PhoneNumber;
                     user.PostalCode = model.PostalCode;

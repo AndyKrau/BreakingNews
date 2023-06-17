@@ -1,7 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @model IEnumerable<IdentityRole>
 
-<h2>Список ролей</h2>
+@{
+    ViewBag.PageInfo = "Roles list:";
+}
+
 <table class="table">
     @foreach (var role in Model)
     {
