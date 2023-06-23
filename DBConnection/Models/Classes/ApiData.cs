@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DBConnection.Models.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DBConnection.Models.Classes
@@ -21,16 +22,13 @@ namespace DBConnection.Models.Classes
         public Country Country { get; set; }
 
 
-        // Пересмотреть метод неправильные переменные
-        public string GetUrl()
+        public string GetUrl(ApiDataConnectionContext apiDataConnection)
         {
-            var country = Country?.CountryKey;
-            var resultUrl = Url + $"apiKey={ApiKey}";
+            var apiDb = apiDataConnection.Countries;
+            var country = apiDb.FirstOrDefault(c => c.Id == CountryId);
+            var countryKey = country!.CountryKey;
 
-            if (country != null)
-            {
-                resultUrl = Url + $"country={country}&" + $"apiKey={ApiKey}";
-            }
+            var resultUrl = Url + $"country={countryKey}&" + $"apiKey={ApiKey}";
 
             return resultUrl;
         } 

@@ -1,5 +1,6 @@
 ﻿using DBConnection.Models.Classes;
 using DBConnection.Models.Contexts;
+using Microsoft.EntityFrameworkCore;
 using NewsAPIParser;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -10,25 +11,25 @@ internal class Program
     {
         using (ApiDataConnectionContext apiDataConnection = new ApiDataConnectionContext())
         {
-            // разобраться, не записывается в БД а на прямую забирается инфа из переенных
-            var apiData = new ApiData
-            {
-                Id = 1, 
-                ApiKey = "d172fecfb2a84ede9339e513fb4fea35",
-                Url = "https://newsapi.org/v2/top-headlines?",
-            };
-            apiData.Country = apiDataConnection.Countries.FirstOrDefault(c => c.CountryName == "USA");
+            #region настройки приложения
+            // Ключ для разработки приложения для https://newsapi.org
+            // API key: "d172fecfb2a84ede9339e513fb4fea35";
+            // Основная часть ссылки портала https://newsapi.org
+            // url: https://newsapi.org/v2/top-headlines?
+            // Часть со страной добавляемая к основной ссылке 
+            // part: country={country}&
 
-            var url = apiData.GetUrl();
+            // https://newsapi.org/v2/top-headlines?country={country}&apiKey={key}
+            // пример рабочей ссылки
+            // https://newsapi.org/v2/top-headlines?country=us&apiKey=d172fecfb2a84ede9339e513fb4fea35
 
-                        // ключи подключения необходимо скрыть
-                        //var key = "d172fecfb2a84ede9339e513fb4fea35";
-                        //var country = "us";
+            #endregion
 
-                        //var url = $"https://newsapi.org/v2/top-headlines?country={country}&apiKey={key}";
+            // получаем данные подключения из базы
+            var apiData = apiDataConnection.ApiData.SingleOrDefault();
 
-                        // пример ссылки
-                        //https://newsapi.org/v2/top-headlines?country=us&apiKey=d172fecfb2a84ede9339e513fb4fea35
+            // собираем строку подключения через метод класса ApiData
+            var url = apiData.GetUrl(apiDataConnection);
 
             var request = new GetRequest(url);
             request.Run();
