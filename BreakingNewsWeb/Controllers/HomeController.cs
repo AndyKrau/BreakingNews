@@ -14,7 +14,7 @@ namespace BreakingNewsWeb.Controllers
     {
         private readonly NewsContext newsDb;
 
-        public HomeController(NewsContext newsContext, UsersContext usersContext)
+        public HomeController(NewsContext newsContext)
         {
             // получаем контекст newsDB
             newsDb = newsContext;
@@ -59,18 +59,5 @@ namespace BreakingNewsWeb.Controllers
         {
             return View();
         }
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            return RedirectToAction("Index");
-        }
-
     }
 }

@@ -11,6 +11,7 @@ builder.Services.AddMvc();
 // добавляем контексты баз данных для новостей и пользователей
 builder.Services.AddDbContext<NewsContext>();
 builder.Services.AddDbContext<UsersContext>();
+builder.Services.AddDbContext<ApiDataConnectionContext>();
 
 
 // специфичные для Identity сервисы

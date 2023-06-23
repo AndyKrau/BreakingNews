@@ -1,9 +1,12 @@
 ﻿using BreakingNewsWeb.Models.ViewModels;
 using DBConnection.Models.Classes;
+using DBConnection.Models.Contexts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BreakingNewsWeb.Controllers
 {
@@ -11,25 +14,25 @@ namespace BreakingNewsWeb.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
-        RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApiDataConnectionContext _apiData;
 
-        public object Viewbag { get; private set; }
-
-        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public UsersController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApiDataConnectionContext apiData)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+
+            // получаем контекст APIData
+            _apiData = apiData;
         }
 
         public async Task<IActionResult> Card()
         {
-            var user = _userManager.Users.FirstOrDefault(x=> x.UserName == User.Identity.Name);
-            //User user = await _userManager.GetUserId
+            var user = await _userManager.Users.FirstOrDefaultAsync(x=> x.UserName == User.Identity.Name);
             if (user == null)
             {
                 return NotFound();
             }
-
             return View(user);
         }
 
@@ -65,10 +68,6 @@ namespace BreakingNewsWeb.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-
-                
-
-
             }
             return View(model);
         }
@@ -178,5 +177,84 @@ namespace BreakingNewsWeb.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Settings()
+        {
+            // находим первую строчку подключения в базе
+            var apiSettings = await _apiData.ApiData.SingleOrDefaultAsync();
+            if (apiSettings == null)
+            {
+                return NotFound();
+            }
+
+            // получаем текущую страну из базы для отображения и передаём название в новый экз. класса ChangeApiDataViewModel
+            var currentContryId = await _apiData.Countries.FirstOrDefaultAsync(c => c.Id == apiSettings.CountryId);
+            if (currentContryId != null)
+            {
+                ChangeApiDataViewModel model = new()
+                {
+                    ApiKey = apiSettings.ApiKey,
+                    Url = apiSettings.Url,
+                    CountryName = currentContryId.CountryName
+                };
+                return View(model);
+            }
+            return View();
+        }
+
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> EditSettings()
+        {
+            // список стран для выпадающего списка в View
+            List<Country> countries = _apiData.Countries.ToList();
+            ViewBag.Countries = countries.Select(y => y.CountryName).ToList();
+
+            // находим первую строчку подключения в базе
+            var apiSettings = await _apiData.ApiData.SingleOrDefaultAsync();
+            if (apiSettings == null)
+            {
+                return NotFound();
+            }
+
+            // получаем текущую страну из базы для отображения и передаём название в новый экз. класса ChangeApiDataViewModel
+            var currentContryId = await _apiData.Countries.FirstOrDefaultAsync(c => c.Id == apiSettings.CountryId);
+            if (currentContryId != null)
+            {
+                ChangeApiDataViewModel model = new()
+                {
+                    ApiKey = apiSettings.ApiKey,
+                    Url = apiSettings.Url,
+                    CountryName = currentContryId.CountryName 
+                };
+                return View(model);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> EditSettings(ChangeApiDataViewModel data)
+        {
+            //bool hasCountry = await _apiData.Countries.AnyAsync(c => c.CountryName == data.CountryName);
+            //if (hasCountry)
+            //{
+            var existCountry = _apiData.Countries.FirstOrDefault(x => x.CountryName == data.CountryName);
+            ApiData apiSettings = await _apiData.ApiData.FirstAsync();
+
+            if (apiSettings != null)
+            {
+                apiSettings.ApiKey = data.ApiKey;
+                apiSettings.Url = data.Url;
+                apiSettings.CountryId = existCountry.Id;
+
+                await _apiData.SaveChangesAsync();
+            }
+        //}
+            return RedirectToAction("Settings");
+        }
+
     }
 }
+

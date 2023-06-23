@@ -10,6 +10,7 @@
         <form class="d-grid gap-2 col-12 mx-right">
             @if(ViewContext.HttpContext.User.IsInRole("admin"))
             {
+            <button class="btn btn-light" asp-controller="Users" asp-action="Settings">Settings</button>
             <button class="btn btn-light" asp-controller="Users" asp-action="Users">Users</button>
             }
             <button type="button" 
