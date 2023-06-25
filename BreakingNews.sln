@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BreakingNewsWeb", "BreakingNewsWeb\BreakingNewsWeb.csproj", "{9A9B24B0-E821-4F34-882B-72BFB4A8AF5F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{49C2B056-79A7-4F6D-8CE7-046192F77A05} = {49C2B056-79A7-4F6D-8CE7-046192F77A05}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsAPIParser", "NewsAPIParser\NewsAPIParser.csproj", "{49C2B056-79A7-4F6D-8CE7-046192F77A05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBConnection", "DBConnection\DBConnection.csproj", "{B40D2DD8-6CC5-4B27-B138-48A7000D6135}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{49C2B056-79A7-4F6D-8CE7-046192F77A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49C2B056-79A7-4F6D-8CE7-046192F77A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49C2B056-79A7-4F6D-8CE7-046192F77A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B40D2DD8-6CC5-4B27-B138-48A7000D6135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B40D2DD8-6CC5-4B27-B138-48A7000D6135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B40D2DD8-6CC5-4B27-B138-48A7000D6135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B40D2DD8-6CC5-4B27-B138-48A7000D6135}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
