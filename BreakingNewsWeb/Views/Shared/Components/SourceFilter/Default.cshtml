@@ -1,0 +1,18 @@
+﻿@model IEnumerable<string>
+
+<div class="dropdown">
+  <button class="btn btn-outline-secondary dropdown-toggle mb-3" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+    Sort by source
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+      @foreach (var source in Model)
+      {
+        <a class="dropdown-item btn"
+        asp-action="Articles" asp-controller="Home"
+        asp-route-source="@source"
+        asp-route-page="1">
+        @source
+        </a>
+      }
+  </ul>
+</div>

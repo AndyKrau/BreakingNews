@@ -107,6 +107,7 @@ header__list-source {
 
 
 /*-----MAIN-----*/
+
 .main {
     display: flex;
     flex-direction: row;
@@ -145,6 +146,11 @@ header__list-source {
 /*используется для скрытия первой статьи из базы*/
 .class-0 {
     display: none;
+}
+
+.dropdown-menu {
+    overflow-y: scroll;
+    max-height: 500px;
 }
 
 .img {

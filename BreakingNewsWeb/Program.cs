@@ -28,6 +28,12 @@ builder.Services.AddIdentity<User, IdentityRole>(option =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.MapControllerRoute("soupage", "{source}/Page{page:int}", new { Controller = "Home", action = "Articles" });
+app.MapControllerRoute("page", "Page{page:int}", new { Controller = "Home", action = "Articles", page = 1 });
+app.MapControllerRoute("source", "{source}", new { Controller = "Home", action = "Articles", page = 1 });
+app.MapControllerRoute("pagination", "Articles/Page{page}", new { Controller = "Home", action = "Articles", page = 1 });
+
 app.MapDefaultControllerRoute();
 app.UseStaticFiles();
 
