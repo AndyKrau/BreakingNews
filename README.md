@@ -8,5 +8,8 @@ with which you can change the settings for the collected news.
 * the application itself, with it you can view the latest news and all the contents of the database;
 * base connection module(DataBases realise on PostgreSQL).
 
+### Some screenshots:
+![AndyNews-Index]("C:\Users\rogue\Downloads\AndyNews-Index.png" "AndyNews-Index")
+
 The project is my personal initiative and serves educational purposes.
 The project is alive and continues to be improved.
