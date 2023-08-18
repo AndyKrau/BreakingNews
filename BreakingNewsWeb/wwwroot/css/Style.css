@@ -248,3 +248,8 @@ pagination__btn-active {
     justify-content: center;
     align-items: center;
 }
+
+.footer__icons {
+    height: 1.5rem;
+    padding: 0 15px;
+}
