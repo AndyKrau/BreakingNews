@@ -9,13 +9,21 @@ with which you can change the settings for the collected news.
 * base connection module(DataBases realise on PostgreSQL).
 
 ### Some screenshots:
+
 ![AndyNews-Index](Screenshots/AndyNews-Index.png "AndyNews-Index")
+****
 ![AndyNews-Articles](Screenshots/AndyNews-Articles.png "AndyNews-Articles")
+****
 ![AndyNews-PersonalPage](Screenshots/AndyNews-PersonalPage.png "AndyNews-PersonalPage")
+****
 ![AndyNews-PersonalPage-Edit](Screenshots/AndyNews-PersonalPage-Edit.png "AndyNews-PersonalPage-Edit")
+****
 ![AndyNews-PersonalPage-Users](Screenshots/AndyNews-PersonalPage-Users.png "AndyNews-PersonalPage-Users")
+****
 ![AndyNews-PersonalPage-Users-Roles](Screenshots/AndyNews-PersonalPage-Users-Roles.png "AndyNews-PersonalPage-Users-Roles")
+****
 ![AndyNews-PersonalPage-Settings](Screenshots/AndyNews-PersonalPage-Settings.png "AndyNews-PersonalPage-Settings")
+****
 ![AndyNews-PersonalPage-Settings-Edit](Screenshots/AndyNews-PersonalPage-Settings-Edit.png "AndyNews-PersonalPage-Settings-Edit")
 
 
