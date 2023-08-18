@@ -6,5 +6,6 @@ namespace BreakingNewsWeb.Models.ViewModels
     {
         public IEnumerable<Article> Articles { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public string? CurrentSource { get; set; }
     }
 }

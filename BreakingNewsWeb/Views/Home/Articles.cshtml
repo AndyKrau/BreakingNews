@@ -7,13 +7,20 @@
     ViewBag.PageInfo = "Articles collection:";
 }
 
+<div> 
+    <vc:source-filter/>
+</div>
+
 <div page-model="@Model.PagingInfo" page-action="Articles"
         page-classes-enabled="true"
         page-class="btn" page-class-normal="btn-outline-secondary"
         page-class-disabled="disabled"
-        page-class-selected="btn-secondary" class="btn-group dropdown-menu-left mb-4" ></div>
+        page-class-selected="btn-secondary" 
+        page-url-category="@Model?.CurrentSource!"
+        class="btn-group dropdown-menu-left mb-4" >
+</div>
 
-@foreach (var article in Model.Articles)
+@foreach (var article in Model?.Articles!)
 {
     <div class="articles">
         <img class="articles__img" src="@article.UrlToImage"/>
@@ -30,4 +37,7 @@
         page-classes-enabled="true"
         page-class="btn" page-class-normal="btn-outline-secondary"
         page-class-disabled="disabled"
-        page-class-selected="btn-secondary" class="btn-group dropdown-menu-left mb-4" ></div>
+        page-class-selected="btn-secondary"
+        page-url-category="@Model?.CurrentSource!"
+        class="btn-group dropdown-menu-left mb-4" >
+</div>

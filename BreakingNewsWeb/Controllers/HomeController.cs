@@ -32,25 +32,28 @@ namespace BreakingNewsWeb.Controllers
             return View(reverseArticlesList);
         }
 
-        public IActionResult Articles(int page = 1)
+        public async Task<IActionResult> Articles(string? source, int page = 1)
         {
             // обозначаем количество статей на странице
-            int articlesOnPage = 10;
+            int articlesOnPage = 7;
 
             // создаём список статей с информацией о странице
             var data = new ArticlesListViewModel
             {
-                Articles = newsDb.articles
+
+                Articles = await newsDb.articles
+                            .Where(p => source == null || p.Source == source)
                             .OrderByDescending(x => x.Id)
                             .Skip((page - 1) * articlesOnPage)
                             .Take(articlesOnPage)
-                            .ToList(),
+                            .ToListAsync(),
                 PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = articlesOnPage,
-                    TotalItems = newsDb.articles.Count()
-                }
+                            {
+                                CurrentPage = page,
+                                ItemsPerPage = articlesOnPage,
+                                TotalItems = source == null ? newsDb.articles.Count() : newsDb.articles.Where(a => a.Source == source).Count()
+                            },
+                CurrentSource = source
             };
             return View(data);
         }
