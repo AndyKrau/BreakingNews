@@ -9,7 +9,7 @@ with which you can change the settings for the collected news.
 * base connection module(DataBases realise on PostgreSQL).
 
 ### Some screenshots:
-![AndyNews-Index]("C:\Users\rogue\Downloads\AndyNews-Index.png" "AndyNews-Index")
+![AndyNews-Index]("/Screenshots/AndyNews-Index.png" "AndyNews-Index")
 
 The project is my personal initiative and serves educational purposes.
 The project is alive and continues to be improved.
